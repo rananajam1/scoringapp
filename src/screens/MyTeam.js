@@ -4,58 +4,46 @@ import {Container} from 'native-base'
 import AppHeader from './Header';
 import {logoutUser, loadUser} from '../../redux/js/actions/AuthActions/AuthActions';
 import { useDispatch, useSelector } from 'react-redux';
-import PlayerStats from '../../components/PlayerStats';
-import { ScrollView } from 'react-native-gesture-handler';
+import TeamStats from '../../components/TeamStats';
+import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import TeamForm from '../../components/TeamForm'
 import { LoadPlayer } from '../../redux/js/actions/PlayerActions/PlayerActions';
+import { LoadTeam, GetTeamPlayers } from '../../redux/js/actions/TeamActions/TeamActions';
+import { styles } from '../../styles/signup';
+import Card from '../../components/Card';
 
 function MyTeam(props) {
 
     let user = useSelector(state => state.token.userData);
     let profile = useSelector(state => state.token.profile);
     let playerState = useSelector(state => state.token.player);
-    let teamState = useSelector(state => state.token.player);
-    let [player, setPlayer] = useState('');
+    let teamState = useSelector(state => state.token.team);
     let [team, setTeam] = useState('');
+    let [player, setPlayer] = useState('');
+    let [teamPlayers, setTeamPlayers] = useState('');
   let dummy = 
   {
     "t20": {
       'matches' : 20,
-      'out' : 15,
-      'runs' : 350,
-      'balls' : 289,
-      'fours' : 21,
-      'sixes' : 15,
-      'thirties' : 4,
-      'fifties' : 2,
-      'centuries' : 0,
-      'highest' : 78
+      'won' : 12,
+      'lost' : 5,
+      'no_result' : 3,
     } ,
     "oneday": {
       'matches' : 15,
-      'out' : 13,
-      'runs' : 589,
-      'balls' : 450,
-      'fours' : 42,
-      'sixes' : 36,
-      'thirties' : 6,
-      'fifties' : 3,
-      'centuries' : 1,
-      'highest' : 121
-    } ,
+      'won' : 8,
+      'lost' : 5,
+      'no_result' : 2,
+      } ,
     "test": {
       'matches' : 0,
-      'out' : 0,
-      'runs' : 0,
-      'balls' : 0,
-      'fours' : 0,
-      'sixes' : 0,
-      'thirties' : 0,
-      'fifties' : 0,
-      'centuries' : 0,
-      'highest' : 0
-    }
+      'won' : 0,
+      'lost' : 0,
+      'no_result' : 0,
+      }
   }
+
+  
   
   let dispatch = useDispatch();
 
@@ -65,8 +53,25 @@ function MyTeam(props) {
           let response = await dispatch(LoadPlayer());
           if (response.type === 'PLAYER_SUCCESS') {
             console.log('Player Loaded')
-            console.log({PlayerLoaded: response.data.data})
             await setPlayer(response.data.data)
+            if(!teamState || !teamState.name)
+            {
+              response = await dispatch(LoadTeam());
+              if(response.type === 'TEAM_SUCCESS')
+              {
+                console.log({TeamLoaded: response.data.data})
+                response = await dispatch(GetTeamPlayers())
+                if(response.type === 'TEAM_SUCCESS')
+                {
+                  await setTeamPlayers(response.data.data);
+                }
+                // await setPlayer(response.data.data)
+              }
+            }
+            else
+            {
+              console.log('Team State exists')
+            }
           }
           else{
               console.log('Player loading failed')
@@ -78,6 +83,8 @@ function MyTeam(props) {
     
     fetchData();
   }, []);
+  
+    
     return (
         <Container style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
                <AppHeader
@@ -85,82 +92,73 @@ function MyTeam(props) {
                   OpenMenu={() => {
                     props.navigation.toggleDrawer();
                   }}
-                  Screen={"Home"}
+                  Screen={'Team'}
                   isLogout={true}
                   Logout={() => { dispatch(logoutUser())
                   props.navigation.navigate('landing');
                   }}
                 />
-                {console.log({team: team})}
-                {team && team.name
+                {teamState && teamState.name
                 ? 
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-                <View style={{flex: 0.2, justifyContent:'flex-start', alignItems: 'center'}}>
-                    <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>MY PLAYER</Text>
+                  <ScrollView>
+                  <View style={{flex: 0.2, justifyContent:'flex-start', alignItems: 'center'}}>
+                    <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>MY TEAM</Text>
                 </View>
-                <View style={{flex: 0.5, flexDirection: 'row', justifyContent: 'flex-start', justifyContent: 'flex-start'}}>
-                    <Image source={{uri:profile.avatar}} style={{height: 150, width:150, borderRadius:200, borderWidth:2, borderColor: '#507E14'}}/>
-                    {(player.player_type == 'Batsman' || player.player_type =='WicketKeeper_Batsman') && player.batting_style == 'RHB-T'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}{player.player_type} {'\n'}Style: {player.batting_technique && player.batting_technique} 
-                        {'\n'}Position: Top Order{'\n\n'} ___________
+                <View style={{flex: 0.6, flexDirection: 'row', justifyContent: 'flex-start', justifyContent: 'flex-start'}}>
+                    <Image source={{uri:teamState.avatar}} style={{height: 150, width:150, borderRadius:200, borderWidth:2, borderColor: '#507E14'}}/>
+                    
+                        <Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
+                        {'\n'}Name: {teamState && teamState.name}{'\n'}City: {teamState && teamState.city}
+                        {'\n'}Manager: {profile.name} {'\n'}Level: {teamState.level} {'\n\n'} ___________
                         </Text>
-                        :(player.player_type == 'Batsman' || player.player_type =='WicketKeeper_Batsman') && player.batting_style === 'RHB-M'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}NameIs: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}{player.player_type} {'\n'}Style: {player.batting_technique && player.batting_technique}
-                        {'\n'}Position: Middle Order{'\n\n'} ___________
-                        </Text>
-                        :(player.player_type == 'Batsman' || player.player_type =='WicketKeeper_Batsman') && player.batting_style == 'LHB-T'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}{player.player_type} {'\n'}Style: {player.batting_technique && player.batting_technique}
-                        {'\n'}Position: Top Order{'\n\n'} ___________
-                        </Text>
-                        :(player.player_type == 'Batsman' || player.player_type =='WicketKeeper_Batsman') && player.batting_style == 'LHB-M'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}{player.player_type} {'\n'}Style: {player.batting_technique && player.batting_technique}
-                        {'\n'}Position: Middle Order{'\n\n'} ___________
-                        </Text>
-                        : player.player_type == 'Bowler' && player.bowling_style == 'ROS'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}Bowler: Right Arm Off Spin{'\n\n'} ___________
-                        </Text>
-                        : player.player_type == 'Bowler' && player.batting_style == 'RLS'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}Bowler: Right Arm Leg Spin{'\n\n'} ___________
-                        </Text>
-                        : player.player_type == 'Bowler' && player.batting_style == 'RMF'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}Bowler: Right Arm Medium Fast{'\n\n'} ___________
-                        </Text>
-                        : player.player_type == 'Bowler' && player.batting_style == 'LMF'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}Bowler: Left Arm Medium Fast{'\n\n'} ___________
-                        </Text>
-                        : player.player_type == 'Bowler' && player.batting_style == 'LC'
-                        ?<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}Bowler: Left Arm Chinaman{'\n\n'} ___________
-                        </Text>
-                        :<Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
-                        {'\n'}Name: {player && player.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
-                        {'\n'}{player.player_type} {'\n'}{player.batting_style} {'\n\n'} ___________
-                        </Text>
-                    }
+                    
                 </View>
                 <View style={{flex: 0.2, justifyContent: 'flex-start', alignItems: 'center', marginTop:50}}>
-                  <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>STATS</Text>
+                  <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 5}}>MATCHES</Text>
                 </View>
-                <ScrollView style={{flex: 5}}>
-                  <PlayerStats children = {dummy}/>
-                </ScrollView>
+                <View style={{flex: 2, alignItems: 'center'}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}}
+                    onPress={() => props.navigation.navigate('MatchForm')}>
+                      <Text style={styles.signupButton}>
+                        + Create
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}}
+                    onPress={() => props.navigation.navigate('JoinMatchForm')}>
+                      <Text style={styles.signupButton}>
+                        Join
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}} onPress={() => Alert.alert('All matches')}>
+                      <Text style={styles.signupButton}>
+                        All
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={{fontSize: 30, fontWeight: '400', color: '#507E14'}}>____________________________</Text>
+                  <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop:20}}>SQUAD</Text>
+                  <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}}
+                    onPress = {() => {props.navigation.navigate('TeamSquad', {teamPlayers})}}>
+                      <Text style={styles.signupButton}>
+                        Players
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}} onPress = {() => props.navigation.navigate('AddPlayer')}>
+                      <Text style={styles.signupButton}>
+                        + Add
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={{fontSize: 30, fontWeight: '400', color: '#507E14'}}>____________________________</Text>
+                  <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop:20}}>STATS</Text>
+                </View>
+                <View style={{margin: 10}}>
+                  <TeamStats children = {dummy}/>
+                </View>
+                  </ScrollView>
                 </View>
                 :
                 <View style={{flex:1}}>

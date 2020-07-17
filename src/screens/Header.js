@@ -23,9 +23,11 @@ import { loading, logout } from "../../redux/js/actions/AuthActions/AuthActions"
 //endregion
 
 class MasterHeader extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor(props, token) {
+    super(props, token);
   }
+
+
 
   _getMenuBtnRight() {
     if (this.props.isMenuRight) {
@@ -63,7 +65,8 @@ class MasterHeader extends PureComponent {
 
 
   _getBackBtn() {
-    if (this.props.isBack) {
+    console.log(this.token)
+    if (this.token) {
       return (
         <Button
           transparent
@@ -118,11 +121,11 @@ class MasterHeader extends PureComponent {
   }
 
   _getProfileIcon() {
-    if (this.props.isProfile) {
+    {
       return (
         <Button
           transparent
-          onPress={this.props.GoProfile}
+          onPress={this.props.r}
           background={TouchableNativeFeedback.Ripple(
             "rgba(0, 112, 210, 0.8)",
             true
@@ -200,10 +203,10 @@ class MasterHeader extends PureComponent {
           </Title>
         </Body>
         <Right style={[{ flex: 2, justifyContent: "space-around" }]}>
+          {/* {this._getProfileIcon()} */}
           {this._getPowerOffBtn()}
-          {this._getProfileIcon()}
-          {this._getMenuBtnRight()}
-          {this._getAddIcon()}
+          {/* {this._getMenuBtnRight()}
+          {this._getAddIcon()} */}
         </Right>
       </Header>
     );

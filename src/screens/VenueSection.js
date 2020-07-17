@@ -262,11 +262,11 @@ function VenueSection(props) {
           <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>VENUES</Text>
         </View>
         <View style={{justifyContent:'center', alignItems: 'center'}}>
-            <FlatList
+            {/* <FlatList
               data={data}
               renderItem={({ item }) => <Card children={item}/>}
               // keyExtractor={item => item.id}
-            />
+            /> */}
           </View>
         </Container>
     );

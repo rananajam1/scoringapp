@@ -7,13 +7,22 @@ import {checkInputs} from '../utilities';
 import {
   UserLogin,
   loading,
+  loadUser,
 } from '../../redux/js/actions/AuthActions/AuthActions';
 import Logo from '../../components/Logo';
+import { LoadProfile } from '../../redux/js/actions/ProfileActions/ProfileActions';
+import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/PlayerActions';
+import { LoadCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
+import { LoadTeam, GetAllTeams } from '../../redux/js/actions/TeamActions/TeamActions';
+import { LoadMyVenues, GetAllVenues } from '../../redux/js/actions/VenueActions/VenueActions';
+
 
 function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   let dispatch = useDispatch();
+
+  let user = useSelector(state => state.token.userData);
 
   const handleSubmit = async e => {
     dispatch(loading(true));
@@ -21,6 +30,99 @@ function Login(props) {
     if (check) {
       let response = await dispatch(UserLogin(email, password));
       if (response.type === 'AUTH_SUCCESS') {
+        console.log('User Authorized');
+        response = await dispatch(loadUser())
+        console.log({USER_AUTHORIZED_RESULT: response.data.data.user})
+        if(response.data.data.user.profile_info === true)
+        {
+         let res = await dispatch(LoadProfile());
+         {
+           if(res.type === 'PROFILE_SUCCESS')
+           {
+            console.log('User Profile Loaded')
+           }
+           else{
+            console.log('User Profile Error')
+           }
+         }
+        }
+        if(response.data.data.user.player === true)
+        {
+          res = await dispatch(LoadPlayer())
+          if(res.type === 'PLAYER_SUCCESS')
+           {
+            console.log('Player Loaded')
+           }
+           else{
+            console.log('Player Error')
+           }
+        }
+        if(response.data.data.user.cricpocket === true)
+        {
+          res = await dispatch(LoadCricpocket())
+          if(res.type === 'CRICPOCKET_SUCCESS')
+           {
+            console.log('CricPocket Loaded')
+           }
+           else{
+            console.log('CricPocket Error')
+           }
+        }
+        if(response.data.data.user.role_creation === true)
+        {
+          if(response.data.data.user.role === 'Team Manager')
+          {
+            res = await dispatch(LoadTeam());
+            if(res.type === 'TEAM_SUCCESS')
+            {
+              console.log('Team Loaded')
+            }
+            else{
+              console.log('Team Error')
+            }
+          }
+          if(response.data.data.user.role === 'Ground Manager')
+          {
+             res = await dispatch(LoadMyVenues());
+             if(res.type === 'VENUE_SUCCESS')
+            {
+              console.log('Venue Loaded')
+            }
+            else{
+              console.log('Venue Error')
+            }
+          }
+        }
+        response = await dispatch(GetAllPlayers());
+        if(response.type === 'PLAYER_SUCCESS')
+        {
+          console.log('All Players Loaded')
+        }
+        else
+        {
+          console.log('All Players Error')
+        }
+
+        response = await dispatch(GetAllTeams());
+        if(response.type === 'TEAM_SUCCESS')
+        {
+          console.log('All Teams Loaded')
+        }
+        else
+        {
+          console.log('All Teams Error')
+        }
+
+        response = await dispatch(GetAllVenues());
+        if(response.type === 'TEAM_SUCCESS')
+        {
+          console.log('All Teams Loaded')
+        }
+        else
+        {
+          console.log('All Teams Error')
+        }
+        
         props.navigation.navigate('AppLanding');
       }
       else

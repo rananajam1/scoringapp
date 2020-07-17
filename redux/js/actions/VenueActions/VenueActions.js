@@ -10,23 +10,29 @@ export const loading = bool => ({
 });
 
 export const success = success => ({
-  type: "PLAYER_SUCCESS",
+  type: "VENUE_SUCCESS",
   data: success
 });
 
 export const error = error => ({
-  type: "PLAYER_ERROR",
+  type: "VENUE_ERROR",
   error
 });
 
 
-export const setPlayerInfo = Info => ({
-  type: "SET_PLAYER_INFO",
+export const setVenueInfo = Info => ({
+  type: "SET_VENUE_INFO",
+  Info
+});
+
+export const setAllVenueInfo = Info => ({
+  type: "SET_ALL_VENUE_INFO",
   Info
 });
 
 
-export const LoadPlayer = () => async dispatch => {
+
+export const LoadMyVenues = () => async dispatch => {
   try {
     let token = await AsyncStorage.getItem('@token');
     if(token)
@@ -37,18 +43,19 @@ export const LoadPlayer = () => async dispatch => {
                 'x-auth-token': token
             }
         }
-        const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/player/me', config);
-        console.log({LoadPlayer: res.data})
-         dispatch(setPlayerInfo(res.data))
+        console.log('Load Venue Working')
+        const res = await axios.get('http://localhost:4000/api/venue/my', config);
+        console.log({LoadVenue: res.data})
+         dispatch(setVenueInfo(res.data))
          return dispatch(success(res));
     }
   } catch (error) {
-    console.log('load player error')
+    console.log('load venue error')
     return dispatch(error(error || "ERROR"));
   }
 };
 
-export const CreatePlayer = (Obj) => async dispatch => {
+export const CreateVenue = (Obj) => async dispatch => {
     try {
         let token = await AsyncStorage.getItem('@token');
         if(token)
@@ -59,18 +66,19 @@ export const CreatePlayer = (Obj) => async dispatch => {
                     'x-auth-token':  token
                 }
             }
-            const res = await axios.post('https://dazzling-yosemite-22846.herokuapp.com/api/player', Obj, config);
-             dispatch(setPlayerInfo(res.data))
-             return dispatch(success(res));
+            const res = await axios.post('http://localhost:4000/api/venue', Obj, config)
+            console.log({CreateVenue: res.data})
+            dispatch(LoadMyVenues());
+            return dispatch(success(res));
         }
     } catch (error) {
-      console.log('create player error')
+      console.log('add venue error')
       dispatch(error(error || "ERROR"));
     }
   };
 
-// Get all players
-  export const GetAllPlayers = () => async dispatch => {
+
+export const GetAllVenues = () => async dispatch => {
     try {
         let token = await AsyncStorage.getItem('@token');
         if(token)
@@ -81,14 +89,16 @@ export const CreatePlayer = (Obj) => async dispatch => {
                     'x-auth-token':  token
                 }
             }
-            console.log("AllPlayersGet Working")
-            const res = await axios.get('http://localhost:4000/api/player', config);
-            console.log({AllPlayers: res.data})
+            const res = await axios.get('http://localhost:4000/api/venue', config)
+            dispatch
+            console.log({AllVenues: res.data})
+            dispatch(setAllVenueInfo(res.data))
             return dispatch(success(res));
         }
     } catch (error) {
-      console.log('get all player error')
+      console.log('get all venues error')
       dispatch(error(error || "ERROR"));
     }
   };
-  
+
+

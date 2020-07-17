@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Alert } from 'react-native';
 import {Container} from 'native-base'
 import AppHeader from './Header';
 import {logoutUser} from '../../redux/js/actions/AuthActions/AuthActions';
@@ -8,12 +8,13 @@ import { color } from 'react-native-reanimated';
 import { useSelector, useDispatch } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import Card from '../../components/Card';
+import { GetAllPlayers } from '../../redux/js/actions/PlayerActions/PlayerActions';
 
 function PlayerSection(props) {
-
   let data = [
     {
       "id": 1,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Leanne Graham",
       "username": "Bret",
       "email": "sincere@april.biz",
@@ -37,6 +38,7 @@ function PlayerSection(props) {
     },
     {
       "id": 2,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Ervin Howell",
       "username": "Antonette",
       "email": "shanna@melissa.tv",
@@ -60,6 +62,7 @@ function PlayerSection(props) {
     },
     {
       "id": 3,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Clementine Bauch",
       "username": "Samantha",
       "email": "nathan@yesenia.net",
@@ -83,6 +86,7 @@ function PlayerSection(props) {
     },
     {
       "id": 4,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Patricia Lebsack",
       "username": "Karianne",
       "email": "julianne.oconner@kory.org",
@@ -106,6 +110,7 @@ function PlayerSection(props) {
     },
     {
       "id": 5,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Chelsey Dietrich",
       "username": "Kamren",
       "email": "lucio_hettinger@annie.ca",
@@ -129,6 +134,7 @@ function PlayerSection(props) {
     },
     {
       "id": 6,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Mrs. Dennis Schulist",
       "username": "Leopoldo_Corkery",
       "email": "karley_dach@jasper.info",
@@ -152,6 +158,7 @@ function PlayerSection(props) {
     },
     {
       "id": 7,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Kurtis Weissnat",
       "username": "Elwyn.Skiles",
       "email": "telly.hoeger@billy.biz",
@@ -175,6 +182,7 @@ function PlayerSection(props) {
     },
     {
       "id": 8,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Nicholas Runolfsdottir V",
       "username": "Maxime_Nienow",
       "email": "sherwood@rosamond.me",
@@ -198,6 +206,7 @@ function PlayerSection(props) {
     },
     {
       "id": 9,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Glenna Reichert",
       "username": "Delphine",
       "email": "chaim_mcdermott@dana.io",
@@ -221,6 +230,7 @@ function PlayerSection(props) {
     },
     {
       "id": 10,
+      "avatar": 'https://i.ya-webdesign.com/images/funny-png-avatar-2.png',
       "name": "Clementina DuBuque",
       "username": "Moriah.Stanton",
       "email": "rey.padberg@karina.biz",
@@ -248,22 +258,27 @@ function PlayerSection(props) {
   
   const [players, setPlayers] = useState('');
   
-  const result = useSelector(state => state.players);
-  console.log({players : result})
   let dispatch = useDispatch();
 
-  console.log({players : result})
-  const handlePlayers = async (e) => {
-    dispatch(loading(true));
-    let response = await dispatch(GetAllPlayers());
-    console.log(response);
-    // if (response.type === 'SUCCESS') {
-    //   response => {setPlayers(response)};
-    //   const result = useSelector(state => state.players);
-    //   console.log(result)
-    // }
-    dispatch(loading(false));
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        let response = await dispatch(GetAllPlayers());
+        if(response.type === 'PLAYER_SUCCESS')
+        {
+          console.log({RESPONSE_PLAYERS: response.data.data});
+          await setPlayers(response.data.data)
+        }
+        else{
+          {() => Alert.alert('No player found')}
+        }
+      }catch(err)
+      {
+        console.log(err)
+      }
+    };
+    fetchData();
+  }, [])
 
     return (
         <Container>
@@ -279,14 +294,15 @@ function PlayerSection(props) {
             props.navigation.navigate('Login')
           }}
         />
+        {console.log({PlayersSet: players})}
         <View style={{justifyContent:'center', alignItems: 'center', marginTop: 20}}>
           <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>PLAYERS</Text>
-          {/* {data.map((item) => ()} */}
+          {console.log({Data: data})}
           <View style={{justifyContent:'center', alignItems: 'center'}}>
             <FlatList
-              data={data}
+              data={players}
               renderItem={({ item }) => <Card children={item} button={'Invite'}/>}
-              // keyExtractor={item => item.id}
+              keyExtractor={item => item._id}
             />
           </View>
          

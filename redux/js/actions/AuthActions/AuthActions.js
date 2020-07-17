@@ -42,8 +42,8 @@ export const AuthToken = (token) => async dispatch => {
   try {
    await AsyncStorage.setItem('@token' , token,  () => {console.log('Auth Token Saved')});
   } catch (err) {
-      console.log({load_err: err})
-       dispatch(error(err|| 'ERROR'))
+      cconsole.log('Token set to storage error')
+      dispatch(error(err|| 'ERROR'))
   }
 }
 
@@ -53,8 +53,8 @@ export const logoutUser = () => async dispatch => {
     await AsyncStorage.removeItem('@token' ,  () => {console.log('Auth Token Removed')});
     return dispatch(logout(true))
    } catch (err) {
-       console.log({load_err: err})
-        dispatch(error(err|| 'ERROR'))
+      console.log('logout error')
+      dispatch(error(err|| 'ERROR'))
    }
 }
 
@@ -72,11 +72,12 @@ export const loadUser = () => async dispatch => {
     }
     try {
       const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/login', config);
+      console.log({LOAD_USER_RESPONSE: res.data})
        dispatch(setUserInfo(res.data.user));
-       return dispatch(success(res.data));
+       return dispatch(success(res));
     } catch (err) {
-        console.log({load_err: err})
-        dispatch(error(err || 'ERROR'))
+      console.log('user load error')
+      dispatch(error(err || 'ERROR'))
     }
   }
 }
@@ -96,10 +97,11 @@ export const UserLogin = (Email, Password) => async dispatch => {
       dispatch(getToken(response.token));
       dispatch(AuthToken(response.token));
       dispatch(loadUser());
+      console.log({LOGIN_Response: response})
       return dispatch(success(response));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('login error')
     dispatch(error("Something Went Wrong" || "ERROR"));
   }
 };
@@ -121,8 +123,7 @@ export const UserSignup = (Obj) => async dispatch => {
         return dispatch(success(response));
       }
     } catch (error) {
-        console.log(error)
-      dispatch(loading(false));
+      console.log('signup error')
       dispatch(error("Something Went Wrong" || "ERROR"));
     }
   };

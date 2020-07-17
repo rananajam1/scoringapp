@@ -20,12 +20,20 @@ import VenueSection from './src/screens/VenueSection';
 import CricPocket from './src/screens/CricPocket';
 import CricpocketCard from './components/CricpocketCard';
 import ProfileForm from './components/ProfileForm';
+import TeamSquad from './components/TeamSquad';
 import Scoring from './src/screens/Scoring';
 import MyTeam from './src/screens/MyTeam';
+import MyVenues from './src/screens/MyVenues';
+import VenueForm from './components/VenueForm';
+import AddPlayer from './components/AddPlayer';
 import ScoreCard from './src/screens/ScoreCard';
+import Requests from './src/screens/Requests';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUser, error } from './redux/js/actions/AuthActions/AuthActions';
 import { overlay } from 'react-native-paper';
+import MyTournaments from './src/screens/MyTournaments';
+import MatchForm from './components/MatchForm';
+import JoinMatchForm from './components/JoinMatchForm';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -98,9 +106,9 @@ function AppStack() {
       {state && state.role === 'Team Manager' ?
       <Drawer.Screen name="My Team" component={MyTeam} />
       : state && state.role === 'Ground Manager' ?
-      <Drawer.Screen name="My Venues" component={Tabs} />
-      : state && state.role === 'Organzier' ?
-      <Drawer.Screen name="My Tournaments" component={Tabs} />
+      <Drawer.Screen name="My Venues" component={MyVenues} />
+      : state && state.role === 'Organizer' ?
+      <Drawer.Screen name="My Tournaments" component={MyTournaments} />
       : 
       <Drawer.Screen name="Testing" component={Home}/>
       }
@@ -111,6 +119,8 @@ function AppStack() {
       <Drawer.Screen name="Matches" component={MatchSection} />
       <Drawer.Screen name="Venues" component={VenueSection} />
       <Drawer.Screen name="Umpires" component={CricPocket} />
+      <Drawer.Screen name="Requests" component={Requests} />
+      <Drawer.Screen name="Scoring" component={Tabs} />
     </Drawer.Navigator>
   )
 }
@@ -130,10 +140,15 @@ export default function Routes() {
           component={Signup}
         />
         <Stack.Screen options={{headerShown: true}} name="Login" component={Login} />
-        <Stack.Screen name="AppLanding" component={AppStack} />
+        <Stack.Screen options={{title : "Back"}} name="AppLanding" component={AppStack}/>
         <Stack.Screen name="dashboard" component={AppStack} />
         <Stack.Screen options={{headerShown: true}} name="form" component={ProfileForm} />
+        <Stack.Screen options={{headerShown: true}} name="VenueForm" component={VenueForm} />
+        <Stack.Screen options={{headerShown: true}} name="TeamSquad" component={TeamSquad} />
         <Stack.Screen options={{headerShown: true}} name="CricpocketCard" component={CricpocketCard} />
+        <Stack.Screen options={{headerShown: true}} name="AddPlayer" component={AddPlayer} />
+        <Stack.Screen options={{headerShown: true}} name="MatchForm" component={MatchForm} />
+        <Stack.Screen options={{headerShown: true}} name="JoinMatchForm" component={JoinMatchForm} />
       </Stack.Navigator>
     </NavigationContainer>
   );

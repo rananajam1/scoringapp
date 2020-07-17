@@ -35,6 +35,7 @@ const Landing = ({navigation}) => {
                         </Text>
                     </TouchableOpacity>
                 </View> 
+                <Text style={{marginBottom: 20, color: '#01438D', fontWeight: '600'}}>© 2020 CriCareerOfficial. All rights reserved</Text>
             </View>
         </View>
     );

@@ -1,56 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, KeyboardAvoidingView, TextInput, AsyncStorage, Alert, Image} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import DatePicker from 'react-native-datepicker';
+import { View, Text, TextInput, Picker, Alert, Image} from 'react-native';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { styles } from '../styles/signup';
 import { useSelector, useDispatch } from 'react-redux';
 import {checkInputs} from '../src/utilities';
-import { CreateProfile, loading } from '../redux/js/actions/ProfileActions/ProfileActions';
 import ImagePicker from 'react-native-image-picker';
+import { CreateTeam } from '../redux/js/actions/TeamActions/TeamActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
-function ProfileForm(props) {
+function Venuefrom(props) {
 
     const [name, setName] = useState('');
     const [city, setCity] = useState('');
-    const [cnic, setCnic] = useState('');
-    const [date, setDate] = useState('');
-    const [phone, setPhone] = useState('');
-    const [avatar, setAvatar] = useState('https://i.ya-webdesign.com/images/funny-png-avatar-2.png');
+    const [fee, setFee] = useState('');
+    const [address, setAddress] = useState('');
+    const [avatar, setAvatar] = useState('https://static.vecteezy.com/system/resources/thumbnails/000/427/012/small/Cricket_Stadium_Vector.jpg');
 
     let dispatch = useDispatch();
 
     const handleSubmit = async () => {
-            let check = checkInputs([city, cnic, date, name, phone, avatar]);
-            let ProfileObject = {
+            let check = checkInputs([city, category, name, avatar]);
+            let VenueObject = {
               name: name,
-              cnic: cnic,
-              dob: date,
               city: city, 
-              phone: phone, 
-              avatar: avatar
+              avatar: avatar,
+              address: address,
+              fee: fee,
             };
             if(check) {
-              if(!cnic.length === 13 || !cnic.match(/^[0-9]+$/))
+              console.log('venue Form')
+              let response = await dispatch(CreateVenue(VenueObject));
+              if(response.type === 'VENUE_SUCCESS')
               {
-                Alert.alert('Please Enter a valid CNIC without (-)');
-              }
-              if(!phone.length === 11 || !phone.match(/^[0-9]+$/))
-              {
-                Alert.alert('Please Enter a valid Phone without (-)');
-              }
-              let response = await dispatch(CreateProfile(ProfileObject));
-              if(response.type === 'PROFILE_SUCCESS')
-              {
-                Alert.alert('Profile Created');
+                console.log({Response: response})
+                Alert.alert('venue Created');
               }
               else{
-                Alert.alert('Profile Failed')
+                Alert.alert('venue Failed')
               }
             }
             else{
                 Alert.alert('Incomplete Fields', '', [{text: 'Ok'}]);
-                dispatch(loading(false));
             }
 }   
         
@@ -71,9 +61,8 @@ function ProfileForm(props) {
             } else if (response.error) {
               console.log('ImagePicker Error: ', response.error);
             } else if (response.customButton) {
-              setAvatar('https://i.ya-webdesign.com/images/funny-png-avatar-2.png')
+              setAvatar('https://static.vecteezy.com/system/resources/thumbnails/000/427/012/small/Cricket_Stadium_Vector.jpg')
             } else {
-              console.log(response.uri)
               setAvatar(response.uri);
             }
           });
@@ -97,10 +86,6 @@ function ProfileForm(props) {
               console.log('User tapped custom button: ', response.customButton);
               alert(response.customButton);
             } else {
-            //   const source = { uri: response.uri };
-              setFilePath(response);
-              setFileData(response.data);
-              setFileUri(response.uri);
               setAvatar(response.uri);
             }
           });
@@ -111,25 +96,26 @@ function ProfileForm(props) {
           if (avatar) {
             return <Image
               source={{ uri: avatar }}
-              style={{height: 200, width: 200, borderRadius: 300/2}}
+              style={{height: 200, width: 350}}
             />
           } else {
             return <Image
-              source={require('../images/avatar_m.jpeg')}
-              style={{height:200, width:200, borderRadius: 200/2}}
+              source={require('../images/avatar_team.png')}
+              style={{height:150, width:150, borderRadius: 150/2}}
             />
           }
         }
 
 
     return (
-        <View style={styles.container}>
-            <KeyboardAwareScrollView >
-                <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', marginLeft: 90}}>PROFILE INFO</Text>
-                <TouchableOpacity onPress = {() =>{chooseImage()}} style={{margin: 40,alignItems:'center', justifyContent:'center'}}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <KeyboardAwareScrollView style={{flex: 1}}>
+                <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', textAlign: 'center', marginTop: 20}}>ADD VENUE</Text>
+                <TouchableOpacity onPress = {() =>{chooseImage()}} style={{margin: 20,alignItems:'center', justifyContent:'center'}}>
                     {renderFileUri()}
+                    <Text style={{backgroundColor: '#01438D', color:'white' ,padding: 5}}>Edit</Text>
                 </TouchableOpacity>    
-                <Text style={{fontSize: 20, margin: 50, marginLeft: 0}}>Complete Your Profile</Text>
+                <Text style={{fontSize: 20, margin: 20, marginLeft: 0}}>Complete Your Venue Fileds</Text>
                 <TextInput 
                     style={styles.inputBox} 
                     placeholder="Name" 
@@ -145,54 +131,29 @@ function ProfileForm(props) {
                     value={city}
                     autoCapitalize = 'none'
                     onChangeText={(text) => setCity(text)}/>
-                <TextInput 
+                 <TextInput 
                     style={styles.inputBox} 
-                    placeholder="Phone" 
-                    placeholderTextColor="white"
-                    value={phone}
-                    autoCapitalize = 'none'
-                    onChangeText={(text) => setPhone(text)}/>
-                <DatePicker
-                    style={{width: 200}}
-                    mode="date"
-                    date= {date}
-                    placeholder="Date of Birth"
-                    format="YYYY-MM-DD"
-                    minDate="1970-05-01"
-                    maxDate="2020-07-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                    dateIcon: {
-                        position: 'absolute',
-                        left: 0,
-                        top: 4,
-                        marginLeft: 0
-                    },
-                    dateInput: {
-                        marginLeft: 50
-                    }
-                    }}
-                    onDateChange={(date) => {setDate(date)}}
-                />
-                <TextInput 
-                    style={styles.inputBox} 
-                    placeholder="1234567890123" 
+                    placeholder="Fee" 
                     placeholderTextColor="white"
                     autoCapitalize = 'none'
-                    value={cnic}
-                    onChangeText={(text) => setCnic(text)}/>
+                    value={fee}
+                    onChangeText={(text) => setFee(text)}/>
+                 <TextInput 
+                    style={styles.inputBox} 
+                    placeholder="Address" 
+                    placeholderTextColor="white"
+                    autoCapitalize = 'none'
+                    value={address}
+                    onChangeText={(text) => setAddress(text)}/>
                  
                 <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress = {() =>{handleSubmit()}}>
                     <Text style={styles.signupButton}>  
-                        Submit
+                        Create
                     </Text>
                 </TouchableOpacity>
-                
-                
             </KeyboardAwareScrollView>
         </View>
     );
 }
 
-export default ProfileForm;
+export default Venuefrom;

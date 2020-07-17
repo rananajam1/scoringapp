@@ -11,14 +11,14 @@ import { LoadProfile } from '../../redux/js/actions/ProfileActions/ProfileAction
 import { CreateCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 import { LoadPlayer } from '../../redux/js/actions/PlayerActions/PlayerActions';
 
-function Dashboard(props) {
+function MyPlayer(props) {
 
 //   const [profile, setProfile] = useState('');
 //   const [user, setUser] = useState('');
     let user = useSelector(state => state.token.userData);
     let profile = useSelector(state => state.token.profile);
-    let playerState = useSelector(state => state.token.player);
-    let [player, setPlayer] = useState('');
+    let player = useSelector(state => state.token.player);
+    let [playerState, setPlayerState] = useState('');
   let dummy = 
   {
     "t20": {
@@ -64,7 +64,8 @@ function Dashboard(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-          let response = await dispatch(LoadPlayer());
+        if(!player && !player._id)
+          {let response = await dispatch(LoadPlayer());
           if (response.type === 'PLAYER_SUCCESS') {
             console.log('Player Loaded')
             console.log({PlayerLoaded: response.data.data})
@@ -72,7 +73,7 @@ function Dashboard(props) {
           }
           else{
               console.log('Player loading failed')
-          }
+          }}
       } catch (error) {
         console.log({catch: error})
       }
@@ -98,7 +99,7 @@ function Dashboard(props) {
                 ? 
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
                 <View style={{flex: 0.2, justifyContent:'flex-start', alignItems: 'center'}}>
-                    <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>MY PLAYER</Text>
+                    <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', marginTop: 20}}>MY PLAYER</Text>
                 </View>
                 <View style={{flex: 0.5, flexDirection: 'row', justifyContent: 'flex-start', justifyContent: 'flex-start'}}>
                     <Image source={{uri:profile.avatar}} style={{height: 150, width:150, borderRadius:200, borderWidth:2, borderColor: '#507E14'}}/>
@@ -173,4 +174,4 @@ function Dashboard(props) {
     );
 }
 
-export default Dashboard;
+export default MyPlayer;

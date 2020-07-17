@@ -43,7 +43,7 @@ export const LoadProfile = () => async dispatch => {
          return dispatch(success(res));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('load profile error')
     return dispatch(error(error || "ERROR"));
   }
 };
@@ -67,8 +67,7 @@ export const CreateProfile = (Obj) => async dispatch => {
              return dispatch(success(res));
         }
     } catch (error) {
-      console.log(error)
-      dispatch(loading(false));
+      cconsole.log('create profile error')
       dispatch(error(error || "ERROR"));
     }
   };

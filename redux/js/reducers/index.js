@@ -10,7 +10,14 @@ export const rootReducer = (
     profile: {},
     cricpocket: {},
     player: {},
-    team: {}
+    team: {},
+    myVenues: {},
+    myMatches: {},
+    innings: {},
+    allVenues: {}, 
+    allPlayers: {}, 
+    allTeams: {}, 
+    allMatches: {}, 
   },
   action,
 ) => {
@@ -25,10 +32,24 @@ export const rootReducer = (
       return {...state, profile: action.Info};
     case 'SET_PLAYER_INFO':
       return {...state, player: action.Info};
+    case 'SET_ALL_PLAYERS_INFO':
+      return {...state, allPlayers: action.Info};
     case 'SET_CRICPOCKET_INFO':
       return {...state, cricpocket: action.Info};
     case 'SET_TEAM_INFO':
       return {...state, team: action.Info};
+    case 'SET_ALL_TEAMS_INFO':
+      return {...state, allTeams: action.Info};
+    case 'SET_MATCH_INFO':
+      return {...state, myMatches: action.Info};
+    case 'SET_ALL_MATCHES_INFO':
+      return {...state, allMatches: action.Info};
+    case 'SET_INNINGS_INFO':
+      return {...state, innings: action.Info};
+    case 'SET_VENUE_INFO':
+      return {...state, myVenues: action.Info};
+    case 'SET_ALL_VENUE_INFO':
+      return {...state, allVenues: action.Info};
     case 'LOADING':
       return {...state, loading: action.isLoading};
     case 'AUTH_ERROR':
@@ -41,13 +62,27 @@ export const rootReducer = (
           profile: {},
           player: {},
           cricpocket: {},
-          team: {}
+          team: {},
+          myVenues: {},
+          myMatches: {},
+          innings: {},
+          allVenues: {}, 
+          allPlayers: {}, 
+          allTeams: {}, 
+          allMatches: {}, 
       }
     case 'PROFILE_ERROR':
       return {
           ...state,
           loading: false,
           profile: {}
+      }
+    case 'VENUE_ERROR':
+      return {
+          ...state,
+          loading: false,
+          myVenues: {},
+          allVenues: {}
       }
     case 'CRICPOCKET_ERROR':
       return {
@@ -59,13 +94,28 @@ export const rootReducer = (
       return {
           ...state,
           loading: false,
-          player: {}
+          player: {},
+          allPlayers: {}
       }
     case 'TEAM_ERROR':
       return {
           ...state,
           loading: false,
-          team: {}
+          team: {},
+          allTeams: {}
+      }
+    case 'MATCH_ERROR':
+      return {
+          ...state,
+          loading: false,
+          myMatches: {},
+          allMatches: {}
+      }
+    case 'INNINGS_ERROR':
+      return {
+          ...state,
+          loading: false,
+          innings: {}
       }
     case 'LOGOUT':
       return {
@@ -78,6 +128,13 @@ export const rootReducer = (
         cricpocket: {},
         player: {},
         team: {},
+        myVenues: {},
+        myMatches: {},
+        innings: {},
+        allMatches: {},
+        allPlayers: {},
+        allTeams: {},
+        allVenues: {}, 
         logout: action.isLogedOut
       }
     default:

@@ -5,6 +5,7 @@ import { styles } from '../styles/signup';
 import { useSelector, useDispatch } from 'react-redux';
 import {checkInputs} from '../src/utilities';
 import { CreatePlayer } from '../redux/js/actions/PlayerActions/PlayerActions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 function PlayerForm(props) {
 
@@ -32,7 +33,6 @@ function PlayerForm(props) {
               if(response.type === 'PLAYER_SUCCESS')
               {
                 Alert.alert('Player Created');
-                props.navigation.navigate('AppLanding');
               }
               else{
                 Alert.alert('Player Failed')
@@ -47,7 +47,7 @@ function PlayerForm(props) {
 
     return (
         <View style={styles.container}>
-            <ScrollView behavior="position" style={{flex:1}} >
+            <KeyboardAwareScrollView behavior="position" style={{flex:1}} >
                 <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', marginLeft: 90, margin: 30}}>PLAYER CREATION</Text>
                 <View style={{alignItems:'center', justifyContent:'center'}}>
                     <Image source={{uri: avatar}} style={{height: 100, width: 100, borderRadius: 100/2}}/>
@@ -110,8 +110,8 @@ function PlayerForm(props) {
                         <Picker.Item label="Left Arm Chinaman" value="LC" /> 
                     </Picker><Text style={{textAlign: 'center', color: '#507E14'}}>(Select Your Bowling Style)</Text>
                 </View>
-                :
-                <View>
+                : player_type === 'All-Rounder'
+                ?<View>
                     <Picker
                         style={{borderWidth: 1, borderRadius: 20, margin: 10, borderColor: '#507E14'}}
                         selectedValue={batting_style}
@@ -144,6 +144,10 @@ function PlayerForm(props) {
                         <Picker.Item label="Left Arm Chinaman" value="LC" /> 
                     </Picker><Text style={{textAlign: 'center', color: '#507E14'}}>(Select Your Bowling Style)</Text>
                 </View>
+
+                :<View>
+
+                </View>
                 }
                  
                 <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', marginBottom: 20}} onPress = {() =>{handleSubmit()}}>
@@ -151,7 +155,7 @@ function PlayerForm(props) {
                         Create
                     </Text>
                 </TouchableOpacity>
-            </ScrollView>
+            </KeyboardAwareScrollView>
         </View>
     );
 }

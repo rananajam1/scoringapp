@@ -38,13 +38,13 @@ export const LoadCricpocket = () => async dispatch => {
                 'x-auth-token': token
             }
         }
+        console.log('Load cricpocket Working')
         const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/cricpocket/me', config);
          dispatch(setCricpocketInfo(res.data))
-         dispatch(loading(false));
          return dispatch(success(res));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('load cricpocket error')
     dispatch(error("Something Went Wrong" || "ERROR"));
   }
 };
@@ -67,7 +67,7 @@ export const LoadReceiver = (receiver) => async dispatch => {
         return dispatch(success(res));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('load transaction receiver error')
     return dispatch(error(error || "ERROR"));
   }
 };
@@ -89,7 +89,7 @@ export const TransferAmount = (Obj) => async dispatch => {
         return dispatch(success(res));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('cricpocket transfer error')
     dispatch(error(error || "ERROR"));
   }
 };
@@ -111,7 +111,7 @@ export const WithdrawAmount = (Obj) => async dispatch => {
         return dispatch(success(res));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('cricpocket withdraw error')
     dispatch(error(error || "ERROR"));
   }
 };
@@ -134,7 +134,7 @@ export const DepositAmount = (Obj) => async dispatch => {
         return dispatch(success(res));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('cricpocket deposit error')
     dispatch(error(error || "ERROR"));
   }
 };
@@ -153,11 +153,11 @@ export const CreateCricpocket = () => async dispatch => {
             }
         }
         console.log('cricpocket creation started')
-        const res = await axios.put('https://dazzling-yosemite-22846.herokuapp.com/api/cricpocket/', config);
+        const res = await axios.put('http://localhost:4000/api/cricpocket', config);
         return dispatch(success(res));
     }
   } catch (error) {
-    dispatch(loading(false));
+    console.log('create cricpocket error')
     dispatch(error(error || "ERROR"));
   }
 };
