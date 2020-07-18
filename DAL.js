@@ -1,12 +1,12 @@
 import { AsyncStorage } from "react-native";
 
 export const Domain = "https://dazzling-yosemite-22846.herokuapp.com";
+// export const Domain = "http://localhost:4000"
 
 
 export const getToken = async () => {
-  let Token = await AsyncStorage.getItem("@UserAuth");
-  Token = await JSON.parse(Token);
-  return `bearer ${Token.token}`;
+  let Token = await AsyncStorage.getItem("@token");
+  return Token;
 };
 
 export const DataAccess = {
@@ -36,22 +36,20 @@ export const DataAccess = {
     return await ReturnResponse(response);
   },
 
-  PostSecured: async (FetchData, params) => {
-    var URL = Domain + FetchData.url;
+  PostSecured: async (Endpoint, params) => {
+    var URL = Domain + Endpoint;
 
     let Token = await getToken();
 
     if (Token != null) {
       let response = await fetch(URL, {
         headers: {
-          Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: Token,
+          'x-auth-token': Token,
         },
         method: "POST",
         body: JSON.stringify(params),
       });
-      debugger;
       return await ReturnResponse(response);
     }
   },

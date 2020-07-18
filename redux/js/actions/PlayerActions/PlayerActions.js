@@ -1,4 +1,4 @@
-import { DataAccess } from "../../../../DAL";
+import { DataAccess, Domain } from "../../../../DAL";
 import ApiEndPoint from "../../../../ApiEndpoints";
 import axios from 'axios';
 import { AsyncStorage } from "react-native";
@@ -37,7 +37,7 @@ export const LoadPlayer = () => async dispatch => {
                 'x-auth-token': token
             }
         }
-        const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/player/me', config);
+        const res = await axios.get(Domain+'/api/player/me', config);
         console.log({LoadPlayer: res.data})
          dispatch(setPlayerInfo(res.data))
          return dispatch(success(res));
@@ -59,7 +59,7 @@ export const CreatePlayer = (Obj) => async dispatch => {
                     'x-auth-token':  token
                 }
             }
-            const res = await axios.post('https://dazzling-yosemite-22846.herokuapp.com/api/player', Obj, config);
+            const res = await axios.post(Domain+'/api/player', Obj, config);
              dispatch(setPlayerInfo(res.data))
              return dispatch(success(res));
         }
@@ -82,7 +82,7 @@ export const CreatePlayer = (Obj) => async dispatch => {
                 }
             }
             console.log("AllPlayersGet Working")
-            const res = await axios.get('http://localhost:4000/api/player', config);
+            const res = await axios.get(Domain+'/api/player', config);
             console.log({AllPlayers: res.data})
             return dispatch(success(res));
         }

@@ -1,4 +1,4 @@
-import { DataAccess } from "../../../../DAL";
+import { DataAccess, Domain } from "../../../../DAL";
 import ApiEndPoint from "../../../../ApiEndpoints";
 import axios from 'axios';
 import { AsyncStorage, Alert } from "react-native";
@@ -39,7 +39,7 @@ export const LoadCricpocket = () => async dispatch => {
             }
         }
         console.log('Load cricpocket Working')
-        const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/cricpocket/me', config);
+        const res = await axios.get(Domain+'/api/cricpocket/me', config);
          dispatch(setCricpocketInfo(res.data))
          return dispatch(success(res));
     }
@@ -63,7 +63,7 @@ export const LoadReceiver = (receiver) => async dispatch => {
                 'x-auth-token': token
             }
         }
-        const res = await axios.post('https://dazzling-yosemite-22846.herokuapp.com/api/cricpocket/find', receiver, config)
+        const res = await axios.post(Domain+'/api/cricpocket/find', receiver, config)
         return dispatch(success(res));
     }
   } catch (error) {
@@ -84,7 +84,7 @@ export const TransferAmount = (Obj) => async dispatch => {
                 'x-auth-token': token
             }
         }
-        const res = await axios.post('https://dazzling-yosemite-22846.herokuapp.com/api/cricpocket_transactions/transfer', Obj, config);
+        const res = await axios.post(Domain+'/api/cricpocket_transactions/transfer', Obj, config);
         dispatch(loading(false));
         return dispatch(success(res));
     }
@@ -106,7 +106,7 @@ export const WithdrawAmount = (Obj) => async dispatch => {
                 'x-auth-token': token
             }
         }
-        const res = await axios.post('https://dazzling-yosemite-22846.herokuapp.com/api/cricpocket_transactions/withdraw', Obj, config);
+        const res = await axios.post(Domain+'/api/cricpocket_transactions/withdraw', Obj, config);
         dispatch(loading(false));
         return dispatch(success(res));
     }
@@ -130,7 +130,7 @@ export const DepositAmount = (Obj) => async dispatch => {
             }
         }
         console.log('deposit started')
-        const res = await axios.post('https://dazzling-yosemite-22846.herokuapp.com/api/cricpocket_transactions/deposit', Obj, config);
+        const res = await axios.post(Domain+'/api/cricpocket_transactions/deposit', Obj, config);
         return dispatch(success(res));
     }
   } catch (error) {
@@ -153,7 +153,7 @@ export const CreateCricpocket = () => async dispatch => {
             }
         }
         console.log('cricpocket creation started')
-        const res = await axios.put('http://localhost:4000/api/cricpocket', config);
+        const res = await axios.put(Domain+'/api/cricpocket', config);
         return dispatch(success(res));
     }
   } catch (error) {

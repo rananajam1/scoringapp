@@ -1,4 +1,4 @@
-import { DataAccess } from "../../../../DAL";
+import { DataAccess, Domain } from "../../../../DAL";
 import ApiEndPoint from "../../../../ApiEndpoints";
 import axios from 'axios';
 import { AsyncStorage } from "react-native";
@@ -44,7 +44,7 @@ export const LoadMyVenues = () => async dispatch => {
             }
         }
         console.log('Load Venue Working')
-        const res = await axios.get('http://localhost:4000/api/venue/my', config);
+        const res = await axios.get(Domain+'/api/venue/my', config);
         console.log({LoadVenue: res.data})
          dispatch(setVenueInfo(res.data))
          return dispatch(success(res));
@@ -66,7 +66,7 @@ export const CreateVenue = (Obj) => async dispatch => {
                     'x-auth-token':  token
                 }
             }
-            const res = await axios.post('http://localhost:4000/api/venue', Obj, config)
+            const res = await axios.post(Domain+'/api/venue', Obj, config)
             console.log({CreateVenue: res.data})
             dispatch(LoadMyVenues());
             return dispatch(success(res));
@@ -89,7 +89,7 @@ export const GetAllVenues = () => async dispatch => {
                     'x-auth-token':  token
                 }
             }
-            const res = await axios.get('http://localhost:4000/api/venue', config)
+            const res = await axios.get(Domain+'/api/venue', config)
             dispatch
             console.log({AllVenues: res.data})
             dispatch(setAllVenueInfo(res.data))
