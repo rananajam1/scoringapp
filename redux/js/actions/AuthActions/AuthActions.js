@@ -62,7 +62,6 @@ export const logoutUser = () => async dispatch => {
 export const loadUser = () => async dispatch => {
   let token = await AsyncStorage.getItem('@token');
   console.log('User Load Started')
-  console.log(token)
   if(token) {
     const config = {
       headers: {
@@ -72,7 +71,6 @@ export const loadUser = () => async dispatch => {
     }
     try {
       const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/login', config);
-      console.log({LOAD_USER_RESPONSE: res.data})
        dispatch(setUserInfo(res.data.user));
        return dispatch(success(res));
     } catch (err) {

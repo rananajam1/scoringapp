@@ -43,9 +43,7 @@ export const LoadMyVenues = () => async dispatch => {
                 'x-auth-token': token
             }
         }
-        console.log('Load Venue Working')
         const res = await axios.get(Domain+'/api/venue/my', config);
-        console.log({LoadVenue: res.data})
          dispatch(setVenueInfo(res.data))
          return dispatch(success(res));
     }
@@ -90,7 +88,6 @@ export const GetAllVenues = () => async dispatch => {
                 }
             }
             const res = await axios.get(Domain+'/api/venue', config)
-            console.log({AllVenues: res.data})
             dispatch(setAllVenueInfo(res.data))
             return dispatch(success(res));
         }

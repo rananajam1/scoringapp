@@ -15,6 +15,7 @@ import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/
 import { LoadCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 import { LoadTeam, GetAllTeams } from '../../redux/js/actions/TeamActions/TeamActions';
 import { LoadMyVenues, GetAllVenues } from '../../redux/js/actions/VenueActions/VenueActions';
+import { GetAllMatches } from '../../redux/js/actions/MatchActions.js/MatchActions';
 
 
 function Login(props) {

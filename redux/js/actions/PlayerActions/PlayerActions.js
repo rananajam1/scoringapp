@@ -42,8 +42,7 @@ export const LoadPlayer = () => async dispatch => {
                 'x-auth-token': token
             }
         }
-        const res = await axios.get(Domain+'/api/player/me', config);
-        console.log({LoadPlayer: res.data})
+        const res = await axios.get(Domain+'/api/player/me', {headers : config.headers});
          dispatch(setPlayerInfo(res.data))
          return dispatch(success(res));
     }
@@ -86,9 +85,7 @@ export const CreatePlayer = (Obj) => async dispatch => {
                     'x-auth-token':  token
                 }
             }
-            console.log("AllPlayersGet Working")
             const res = await axios.get(Domain+'/api/player', config);
-            console.log({AllPlayers: res.data})
             dispatch(setAllPlayersInfo(res.data));
             return dispatch(success(res));
         }

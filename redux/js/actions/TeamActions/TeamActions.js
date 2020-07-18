@@ -33,9 +33,7 @@ export const LoadTeam = () => async dispatch => {
           'x-auth-token': token,
         },
       };
-      console.log('Load Team Working');
       const res = await axios.get(Domain + '/api/team/my-team', config);
-      console.log({LoadTeam: res.data});
       dispatch(setTeamInfo(res.data));
       return dispatch(success(res));
     }
@@ -77,7 +75,6 @@ export const GetAllTeams = () => async dispatch => {
         },
       };
       const res = await axios.get(Domain + '/api/team', config);
-      console.log({AllTeams: res.data});
       return dispatch(success(res));
     }
   } catch (error) {

@@ -1,4 +1,4 @@
-import { DataAccess } from "../../../../DAL";
+import { DataAccess, Domain } from "../../../../DAL";
 import ApiEndPoint from "../../../../ApiEndpoints";
 import axios from 'axios';
 import { AsyncStorage } from "react-native";
@@ -42,7 +42,7 @@ export const LoadMyMatches = () => async dispatch => {
             }
         }
         console.log('Load Venue Working')
-        const res = await axios.get('http://localhost:4000/api/match/my', config);
+        const res = await axios.get(Domain+'/api/match/my', config);
          dispatch(setMatchInfo(res.data))
          return dispatch(success(res));
     }
@@ -64,8 +64,7 @@ export const GetAllMatches = () => async dispatch => {
                     'x-auth-token':  token
                 }
             }
-            const res = await axios.get('http://localhost:4000/api/match', config)
-            console.log(res.data)
+            const res = await axios.get(Domain+'/api/match', config)
             dispatch(setAllMatchesInfo(res.data))
             return dispatch(success(res));
         }

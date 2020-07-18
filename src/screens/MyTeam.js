@@ -50,18 +50,17 @@ function MyTeam(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-          let response = await dispatch(LoadPlayer());
-          if (response.type === 'PLAYER_SUCCESS') {
+          let response1 = await dispatch(LoadPlayer());
+          if (response1.type === 'PLAYER_SUCCESS') {
             console.log('Player Loaded')
             await setPlayer(response.data.data)
             if(!teamState || !teamState.name)
             {
-              response = await dispatch(LoadTeam());
-              if(response.type === 'TEAM_SUCCESS')
+              let response2 = await dispatch(LoadTeam());
+              if(response2.type === 'TEAM_SUCCESS')
               {
-                console.log({TeamLoaded: response.data.data})
-                response = await dispatch(GetTeamPlayers())
-                if(response.type === 'TEAM_SUCCESS')
+                let response3 = await dispatch(GetTeamPlayers())
+                if(response3.type === 'TEAM_SUCCESS')
                 {
                   await setTeamPlayers(response.data.data);
                 }

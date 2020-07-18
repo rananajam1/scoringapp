@@ -10,9 +10,10 @@ import { LoadProfile } from '../../redux/js/actions/ProfileActions/ProfileAction
 import ProfileForm from '../../components/ProfileForm';
 import { SliderBox } from 'react-native-image-slider-box';
 import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/PlayerActions';
-import { GetAllTeams } from '../../redux/js/actions/TeamActions/TeamActions';
-import { GetAllVenues } from '../../redux/js/actions/VenueActions/VenueActions';
+import { GetAllTeams, LoadTeam } from '../../redux/js/actions/TeamActions/TeamActions';
+import { GetAllVenues, LoadMyVenues } from '../../redux/js/actions/VenueActions/VenueActions';
 import { GetAllMatches } from '../../redux/js/actions/MatchActions.js/MatchActions';
+import { LoadCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 
 
 function Home(props) {
