@@ -90,7 +90,6 @@ export const GetAllVenues = () => async dispatch => {
                 }
             }
             const res = await axios.get(Domain+'/api/venue', config)
-            dispatch
             console.log({AllVenues: res.data})
             dispatch(setAllVenueInfo(res.data))
             return dispatch(success(res));

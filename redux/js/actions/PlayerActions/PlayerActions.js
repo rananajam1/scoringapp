@@ -25,6 +25,11 @@ export const setPlayerInfo = Info => ({
   Info
 });
 
+export const setAllPlayersInfo = Info => ({
+  type: "SET_ALL_PLAYERS_INFO",
+  Info
+});
+
 
 export const LoadPlayer = () => async dispatch => {
   try {
@@ -84,6 +89,7 @@ export const CreatePlayer = (Obj) => async dispatch => {
             console.log("AllPlayersGet Working")
             const res = await axios.get(Domain+'/api/player', config);
             console.log({AllPlayers: res.data})
+            dispatch(setAllPlayersInfo(res.data));
             return dispatch(success(res));
         }
     } catch (error) {

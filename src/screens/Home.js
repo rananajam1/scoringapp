@@ -12,6 +12,7 @@ import { SliderBox } from 'react-native-image-slider-box';
 import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/PlayerActions';
 import { GetAllTeams } from '../../redux/js/actions/TeamActions/TeamActions';
 import { GetAllVenues } from '../../redux/js/actions/VenueActions/VenueActions';
+import { GetAllMatches } from '../../redux/js/actions/MatchActions.js/MatchActions';
 
 
 function Home(props) {
@@ -122,14 +123,24 @@ function Home(props) {
                 console.log('All Teams Error')
               }
 
-              let venues = await dispatch(GetAllVenues());
-              if(venues.type === 'VENUE_SUCCESS')
+              response = await dispatch(GetAllVenues());
+              if(response.type === 'VENUE_SUCCESS')
               {
                 console.log('All Venues Loaded')
               }
               else
               {
                 console.log('All Venues Error')
+              }
+
+              response = await dispatch(GetAllMatches());
+              if(response.type === 'MATCH_SUCCESS')
+              {
+                console.log('All Matches Loaded')
+              }
+              else
+              {
+                console.log('All Matches Error')
               }
           }
           else{
@@ -167,7 +178,6 @@ function Home(props) {
                 <SliderBox
                   images={state.images}
                   sliderBoxHeight={220}
-                  onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
                   dotColor="#FFEE58"
                   inactiveDotColor="#90A4AE"
                 />
@@ -179,7 +189,6 @@ function Home(props) {
                     <SliderBox
                       images={state.images2}
                       sliderBoxHeight={220}
-                      onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
                       dotColor="#FFEE58"
                       inactiveDotColor="#90A4AE"
                     />

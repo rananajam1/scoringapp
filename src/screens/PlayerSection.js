@@ -256,33 +256,33 @@ function PlayerSection(props) {
   
 
   
-  const [players, setPlayers] = useState('');
+  // const [players, setPlayers] = useState('');
+  let players = useSelector(state => state.token.allPlayers)
   
   let dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try{
-        let response = await dispatch(GetAllPlayers());
-        if(response.type === 'PLAYER_SUCCESS')
-        {
-          console.log({RESPONSE_PLAYERS: response.data.data});
-          await setPlayers(response.data.data)
-        }
-        else{
-          {() => Alert.alert('No player found')}
-        }
-      }catch(err)
-      {
-        console.log(err)
-      }
-    };
-    fetchData();
+    // const fetchData = async () => {
+    //   try{
+    //     let response = await dispatch(GetAllPlayers());
+    //     if(response.type === 'PLAYER_SUCCESS')
+    //     {
+    //       console.log({RESPONSE_PLAYERS: response.data.data});
+    //       await setPlayers(response.data.data)
+    //     }
+    //     else{
+    //       {() => Alert.alert('No player found')}
+    //     }
+    //   }catch(err)
+    //   {
+    //     console.log(err)
+    //   }
+    // };
+    // fetchData();
   }, [])
 
     return (
         <Container>
-          {newdata = e => handlePlayers(e)}
         <AppHeader
           isMenu={true}
           OpenMenu={() => {
@@ -291,18 +291,18 @@ function PlayerSection(props) {
         //   Screen={"PlayerSection"}
           isLogout={true}
           Logout={() => { dispatch(logoutUser())
-            props.navigation.navigate('Login')
+            props.navigation.navigate('landing')
           }}
         />
         {console.log({PlayersSet: players})}
         <View style={{justifyContent:'center', alignItems: 'center', marginTop: 20}}>
           <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>PLAYERS</Text>
           {console.log({Data: data})}
-          <View style={{justifyContent:'center', alignItems: 'center'}}>
+          <View style={{justifyContent:'center', alignItems: 'center', marginBottom: 20}}>
             <FlatList
               data={players}
               renderItem={({ item }) => <Card children={item} button={'Invite'}/>}
-              keyExtractor={item => item._id}
+              keyExtractor={item => item.id}
             />
           </View>
          

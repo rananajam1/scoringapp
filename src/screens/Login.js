@@ -122,6 +122,16 @@ function Login(props) {
         {
           console.log('All Teams Error')
         }
+
+        response = await dispatch(GetAllMatches());
+        if(response.type === 'MATCH_SUCCESS')
+        {
+          console.log('All Matches Loaded')
+        }
+        else
+        {
+          console.log('All Matches Error')
+        }
         
         props.navigation.navigate('AppLanding');
       }
