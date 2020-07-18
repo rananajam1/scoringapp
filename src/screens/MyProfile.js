@@ -4,15 +4,12 @@ import {Container} from 'native-base'
 import AppHeader from './Header';
 import {logoutUser, loadUser} from '../../redux/js/actions/AuthActions/AuthActions';
 import { useDispatch, useSelector } from 'react-redux';
-import PlayerStats from '../../components/PlayerStats';
-import { ScrollView } from 'react-native-gesture-handler';
 import ProfileForm from '../../components/ProfileForm';
 
 function MyProfile(props) {
 
   let user = useSelector(state=> state.token.userData)
   let profile = useSelector(state => state.token.profile)
-  
   let dispatch = useDispatch();
 
     return (
@@ -28,6 +25,7 @@ function MyProfile(props) {
                   props.navigation.navigate('landing');
                   }}
                 />
+                {console.log({Profile: profile})}
                  {user && user.profile_info === false
                   ? <View style={{flex: 1}}>
                   <ProfileForm user= {user}/>

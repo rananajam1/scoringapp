@@ -12,13 +12,13 @@ import { SliderBox } from 'react-native-image-slider-box';
 import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/PlayerActions';
 import { GetAllTeams, LoadTeam } from '../../redux/js/actions/TeamActions/TeamActions';
 import { GetAllVenues, LoadMyVenues } from '../../redux/js/actions/VenueActions/VenueActions';
-import { GetAllMatches } from '../../redux/js/actions/MatchActions.js/MatchActions';
+import { GetAllMatches } from '../../redux/js/actions/MatchActions/MatchActions';
 import { LoadCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
+import { LoadRequests } from '../../redux/js/actions/RequestActions/RequestActions';
 
 
 function Home(props) {
   let dispatch = useDispatch();
-
 
   let state = {
   images: [         
@@ -32,19 +32,18 @@ function Home(props) {
   ]
   }  
 
-  const user = useSelector(state => state.token.userData)
+  const user = useSelector(state => state.token.userData.user)
   const venues = useSelector(state => state.token.allVenues)
   
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if(user && user)
+        if(!user || !user.name)
           {let response = await dispatch(loadUser());
           if (response.type === 'AUTH_SUCCESS') 
           {
-              console.log('User Loaded')
-              if(response.data.data.user.profile_info === true)
+              if(response.data.user.profile_info === true)
               {
               let res = await dispatch(LoadProfile());
               {
@@ -57,7 +56,7 @@ function Home(props) {
                 }
               }
               }
-              if(response.data.data.user.player === true)
+              if(response.data.user.player === true)
               {
                 res = await dispatch(LoadPlayer())
                 if(res.type === 'PLAYER_SUCCESS')
@@ -68,7 +67,7 @@ function Home(props) {
                   console.log('Player Error')
                 }
               }
-              if(response.data.data.user.cricpocket === true)
+              if(response.data.user.cricpocket === true)
               {
                 res = await dispatch(LoadCricpocket())
                 if(res.type === 'CRICPOCKET_SUCCESS')
@@ -79,9 +78,9 @@ function Home(props) {
                   console.log('CricPocket Error')
                 }
               }
-              if(response.data.data.user.role_creation === true)
+              if(response.data.user.role_creation === true)
               {
-                if(response.data.data.user.role === 'Team Manager')
+                if(response.data.user.role === 'Team Manager')
                 {
                   res = await dispatch(LoadTeam());
                   if(res.type === 'TEAM_SUCCESS')
@@ -92,7 +91,7 @@ function Home(props) {
                     console.log('Team Error')
                   }
                 }
-                if(response.data.data.user.role === 'Ground Manager')
+                if(response.data.user.role === 'Ground Manager')
                 {
                   res = await dispatch(LoadMyVenues());
                   if(res.type === 'VENUE_SUCCESS')
@@ -138,6 +137,16 @@ function Home(props) {
               if(response.type === 'MATCH_SUCCESS')
               {
                 console.log('All Matches Loaded')
+              }
+              else
+              {
+                console.log('All Matches Error')
+              }
+
+              response = await dispatch(LoadRequests());
+              if(response.type === 'REQUEST_SUCCESS')
+              {
+                console.log('All Requests Loaded')
               }
               else
               {

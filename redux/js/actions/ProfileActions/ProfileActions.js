@@ -1,4 +1,4 @@
-import { DataAccess } from "../../../../DAL";
+import { DataAccess, Domain } from "../../../../DAL";
 import ApiEndPoint from "../../../../ApiEndpoints";
 import axios from 'axios';
 import { AsyncStorage } from "react-native";
@@ -29,19 +29,11 @@ export const setProfileInfo = Info => ({
 
 export const LoadProfile = () => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('@token');
-    if(token)
-    {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': token
-            }
-        }
-        const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/profile/me', config);
-         dispatch(setProfileInfo(res.data))
-         return dispatch(success(res));
-    }
+    let Endpoint = `/api/profile/me`;
+    let response = await DataAccess.Get(Endpoint);
+    console.log(response);
+    dispatch(setProfileInfo(response));
+    return dispatch(success(response));
   } catch (error) {
     console.log('load profile error')
     return dispatch(error(error || "ERROR"));
@@ -50,22 +42,10 @@ export const LoadProfile = () => async dispatch => {
 
 export const CreateProfile = (Obj) => async dispatch => {
     try {
-        let token = await AsyncStorage.getItem('@token');
-        if(token)
-        {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token':  token
-                }
-            }
-            console.log('test')
-            const res = await axios.post('https://dazzling-yosemite-22846.herokuapp.com/api/profile/new', Obj, config);
-            console.log('test 1');
-            console.log(res.data)
-             dispatch(setProfileInfo(res.data))
-             return dispatch(success(res));
-        }
+        let Endpoint = `/api/profile/new`;
+        let response = await DataAccess.PostSecured(Endpoint, Obj);
+        dispatch(LoadProfile())
+        return dispatch(success(response));
     } catch (error) {
       cconsole.log('create profile error')
       dispatch(error(error || "ERROR"));

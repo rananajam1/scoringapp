@@ -18,6 +18,7 @@ export const rootReducer = (
     allPlayers: {}, 
     allTeams: {}, 
     allMatches: {}, 
+    requests : {}
   },
   action,
 ) => {
@@ -38,6 +39,8 @@ export const rootReducer = (
       return {...state, cricpocket: action.Info};
     case 'SET_TEAM_INFO':
       return {...state, team: action.Info};
+    case 'SET_REQUEST_INFO':
+      return {...state, requests: action.Info};
     case 'SET_ALL_TEAMS_INFO':
       return {...state, allTeams: action.Info};
     case 'SET_MATCH_INFO':
@@ -70,6 +73,7 @@ export const rootReducer = (
           allPlayers: {}, 
           allTeams: {}, 
           allMatches: {}, 
+          requests: {}
       }
     case 'PROFILE_ERROR':
       return {
@@ -83,6 +87,12 @@ export const rootReducer = (
           loading: false,
           myVenues: {},
           allVenues: {}
+      }
+    case 'REQUEST_ERROR':
+      return {
+          ...state,
+          loading: false,
+          requests: {}
       }
     case 'CRICPOCKET_ERROR':
       return {

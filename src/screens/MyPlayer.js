@@ -13,12 +13,11 @@ import { LoadPlayer } from '../../redux/js/actions/PlayerActions/PlayerActions';
 
 function MyPlayer(props) {
 
-//   const [profile, setProfile] = useState('');
-//   const [user, setUser] = useState('');
     let user = useSelector(state => state.token.userData);
     let profile = useSelector(state => state.token.profile);
     let player = useSelector(state => state.token.player);
-    let [playerState, setPlayerState] = useState('');
+
+    let dispatch = useDispatch();
   let dummy = 
   {
     "t20": {
@@ -59,28 +58,6 @@ function MyPlayer(props) {
     }
   }
   
-  let dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if(!player && !player._id)
-          {let response = await dispatch(LoadPlayer());
-          if (response.type === 'PLAYER_SUCCESS') {
-            console.log('Player Loaded')
-            console.log({PlayerLoaded: response.data.data})
-            await setPlayer(response.data.data)
-          }
-          else{
-              console.log('Player loading failed')
-          }}
-      } catch (error) {
-        console.log({catch: error})
-      }
-  };
-    
-    fetchData();
-  }, []);
     return (
         <Container style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
                <AppHeader

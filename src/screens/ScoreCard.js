@@ -43,7 +43,7 @@ function Scoring(props) {
         //   Screen={"Scoring"}
           isLogout={true}
           Logout={() => { dispatch(logout())
-            props.navigation.navigate('Login');
+            props.navigation.navigate('loanding');
           }}
         /> */}
         <View style={{justifyContent:'center', alignItems: 'center'}}>

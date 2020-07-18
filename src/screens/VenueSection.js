@@ -255,7 +255,7 @@ function VenueSection(props) {
         //   Screen={"VenueSection"}
           isLogout={true}
           Logout={() => { dispatch(logoutUser())
-          props.navigation.navigate('Login');
+          props.navigation.navigate('landing');
           }}
         />
         <View style={{justifyContent:'center', alignItems: 'center'}}>

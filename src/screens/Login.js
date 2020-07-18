@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, KeyboardAvoidingView, TextInput, TouchableOpacity, Alert} from 'react-native';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import Input from '../utilities/index';
 import { styles } from '../../styles/login';
 import {checkInputs} from '../utilities';
 import {
@@ -15,15 +14,13 @@ import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/
 import { LoadCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 import { LoadTeam, GetAllTeams } from '../../redux/js/actions/TeamActions/TeamActions';
 import { LoadMyVenues, GetAllVenues } from '../../redux/js/actions/VenueActions/VenueActions';
-import { GetAllMatches } from '../../redux/js/actions/MatchActions.js/MatchActions';
+import { GetAllMatches } from '../../redux/js/actions/MatchActions/MatchActions';
 
 
 function Login(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   let dispatch = useDispatch();
-
-  let user = useSelector(state => state.token.userData);
 
   const handleSubmit = async e => {
     dispatch(loading(true));
@@ -33,8 +30,8 @@ function Login(props) {
       if (response.type === 'AUTH_SUCCESS') {
         console.log('User Authorized');
         response = await dispatch(loadUser())
-        console.log({USER_AUTHORIZED_RESULT: response.data.data.user})
-        if(response.data.data.user.profile_info === true)
+        console.log({USER_AUTHORIZED_RESULT: response})
+        if(response.data.user.profile_info === true)
         {
          let res = await dispatch(LoadProfile());
          {
@@ -47,7 +44,7 @@ function Login(props) {
            }
          }
         }
-        if(response.data.data.user.player === true)
+        if(response.data.user.player === true)
         {
           res = await dispatch(LoadPlayer())
           if(res.type === 'PLAYER_SUCCESS')
@@ -58,7 +55,7 @@ function Login(props) {
             console.log('Player Error')
            }
         }
-        if(response.data.data.user.cricpocket === true)
+        if(response.data.user.cricpocket === true)
         {
           res = await dispatch(LoadCricpocket())
           if(res.type === 'CRICPOCKET_SUCCESS')
@@ -69,9 +66,9 @@ function Login(props) {
             console.log('CricPocket Error')
            }
         }
-        if(response.data.data.user.role_creation === true)
+        if(response.data.user.role_creation === true)
         {
-          if(response.data.data.user.role === 'Team Manager')
+          if(response.data.user.role === 'Team Manager')
           {
             res = await dispatch(LoadTeam());
             if(res.type === 'TEAM_SUCCESS')
@@ -82,7 +79,7 @@ function Login(props) {
               console.log('Team Error')
             }
           }
-          if(response.data.data.user.role === 'Ground Manager')
+          if(response.data.user.role === 'Ground Manager')
           {
              res = await dispatch(LoadMyVenues());
              if(res.type === 'VENUE_SUCCESS')

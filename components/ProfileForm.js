@@ -67,13 +67,11 @@ function ProfileForm(props) {
           };
           ImagePicker.showImagePicker(options, (response) => {
             if (response.didCancel) {
-              console.log('User cancelled image picker');
             } else if (response.error) {
               console.log('ImagePicker Error: ', response.error);
             } else if (response.customButton) {
               setAvatar('https://i.ya-webdesign.com/images/funny-png-avatar-2.png')
             } else {
-              console.log(response.uri)
               setAvatar(response.uri);
             }
           });
@@ -87,7 +85,6 @@ function ProfileForm(props) {
             },
           };
           ImagePicker.launchCamera(options, (response) => {
-            console.log('Response = ', response);
       
             if (response.didCancel) {
               console.log('User cancelled image picker');

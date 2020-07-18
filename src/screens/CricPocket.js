@@ -4,7 +4,7 @@ import {Container} from 'native-base'
 import AppHeader from './Header';
 import {logoutUser} from '../../redux/js/actions/AuthActions/AuthActions';
 import { color } from 'react-native-reanimated';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PlayerStats from '../../components/PlayerStats';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {styles} from '../../styles/login'
@@ -13,57 +13,24 @@ import { LoadCricpocket, CreateCricpocket } from '../../redux/js/actions/Cricpoc
 
 function CricPocket(props) {
 
-  const [cricpocket, setCricpocket] = useState('');
-  const [profile, setProfile] = useState('');
+  const cricpocket = useSelector(state=> state.token.cricpocket);
+  const profile = useSelector(state=> state.token.profile);
   
   let dispatch = useDispatch();
 
   const handleCreate = async () => {
-    let res = dispatch(CreateCricpocket())
-    .then( setCricpocket(res) ,Alert.alert('Cricpocket created'))
-    .catch(Alert.alert('Failed'))
+    let res = dispatch(CreateCricpocket());
+    if(res.type === 'CRICPOCKET_SUCCESS')
+    {
+      Alert.alert('Successfull');
+    }
+    else{
+      Alert.alert('failed');
+    }
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log('cricpocket working')
-        if(profile === '')
-        {
-          console.log('set profile state')
-          dispatch(loading(true))
-          let response = await dispatch(LoadProfile());
-          if(response.type === 'PROFILE_SUCCESS')
-          {  
-            console.log('Profile Loaded')
-            await setProfile(response.data.data);
-            if(cricpocket === '')
-            {
-              response = await dispatch(LoadCricpocket())
-              if(response.type === 'CRICPOCKET_SUCCESS')
-              {
-                console.log('CricPocket Loaded')
-                await setCricpocket(response.data.data);
-                console.log("Success")
-              }
-              else{
-                console.log('Error')
-              }
-            }
-          } 
-        }
-      } catch (error) {
-        console.log({catch: error})
-      }
-  };
-    
-    fetchData();
-  }, []);
-
 
     return (
         <Container style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-          {console.log({finally: cricpocket})}
         <AppHeader
           isMenu={true}
           OpenMenu={() => {
@@ -72,7 +39,7 @@ function CricPocket(props) {
           Screen={"Cricpocket"}
           isLogout={true}
           Logout={() => { dispatch(logoutUser())
-          props.navigation.navigate('Login');
+          props.navigation.navigate('landing');
           }}
         />
         <View style={{flex: 0.1, justifyContent:'flex-start', alignItems: 'center'}}>

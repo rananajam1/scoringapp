@@ -5,7 +5,8 @@ import { styles } from '../styles/signup';
 import { useSelector, useDispatch } from 'react-redux';
 import {checkInputs} from '../src/utilities';
 import ImagePicker from 'react-native-image-picker';
-import { AddNewPlayer } from '../redux/js/actions/TeamActions/TeamActions';
+import { AddNewPlayer} from '../redux/js/actions/TeamActions/TeamActions';
+import { JoinMatch } from '../redux/js/actions/MatchActions/MatchActions';
 
 function JoinMatchForm(props) {
 
@@ -14,23 +15,25 @@ function JoinMatchForm(props) {
     let dispatch = useDispatch();
 
     const handleSubmit = async () => {
-            let check = checkInputs([id]);
-            
-            if(check) {
-            //   console.log('Join Match Form')
-            //   let response = await dispatch(JoinMatch(id));
-            //   if(response.type === 'MATCH_SUCCESS')
-            //   {
-            //     console.log({Response: response.data.data})
-            //     {() => Alert.alert('Match Scheduled')};
-            //   }
-            //   else{
-            //     {() => Alert.alert('Match Failed')}
-            //   }
+        let Obj = {match_id: id};
+        let check = checkInputs([id]);
+    
+        if (check) {
+          console.log('Join Match Form');
+          let response = await dispatch(JoinMatch(Obj));
+          if (response.type === 'TEAM_SUCCESS') {
+            console.log(response)
+            {
+              Alert.alert('Match Scheduled');
             }
-            else{
-                Alert.alert('Incomplete Fields', '', [{text: 'Ok'}]);
+          } else {
+            {
+              () => Alert.alert('Match Failed');
             }
+          }
+        } else {
+          Alert.alert('Incomplete Fields', '', [{text: 'Ok'}]);
+        }
 }  
 
     return (

@@ -9,10 +9,11 @@ function Card(props) {
     return (
         <View style={styles.containerStyle}>
             {props.text && props.text === 'match'
-            ?<View>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Format: {props.children.format}</Text>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Rank : {props.children.ranking}</Text>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Player : {props.children.player_type}</Text>
+            ?<View style={{width: 300, alignItems: 'center', height: 150}}>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Match : {props.children.type}</Text>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'300', alignItems: 'center'}}>Format : {props.children.format}</Text>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'300', alignItems: 'center'}}>Venue : {props.children.venue}</Text>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'300', alignItems: 'center'}}>Date : {props.children.date}</Text>
             </View>
             :<View>
             <Image source={{uri: props.children.avatar}} style={{height: 200, width:200, borderRadius: 350, marginBottom:10}}/> 

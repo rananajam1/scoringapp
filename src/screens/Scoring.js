@@ -23,11 +23,12 @@ function Scoring(props) {
       }, {
         value: '4wd',
       }];
+
     let match = {
-        'team1' : 'COMSATS',
-        'team2' : 'Islamabad Mevericks',
-        'team1_s' : 'CUI',
-        'team2_s' : 'IM',
+        'team1' : 'Islamabad United',
+        'team2' : 'Karachi Kings',
+        'team1_s' : 'IU',
+        'team2_s' : 'KK',
         'toss' : '',
         'batting_1': '',
         'venue' : 'Comsats Cricket ground Islamabad',
@@ -88,9 +89,62 @@ function Scoring(props) {
             }
             ,
         ],
-        'tema2_players' : [
-            'Muhammad Sarmad','Rana sarmad','Umer Gujjar','Umer Shikari','Abdul Rafey','Ali Khan','Muhammad Ali',
-            'Waqas Shakoor','Zubair Mughal','Zubair Afzal','Kamran Ali' 
+        'team2_players' : [
+            {
+                "name" : "Hassan Ali",
+                "score" : 0
+            }
+            ,
+            {
+                "name": 'Kamran Shahid',
+                "score" : 0
+            }
+            ,
+            {
+                "name" : "Ali Waqar",
+                "score" : 0
+            }
+            ,
+            {
+                "name": 'Khurum Manzoor',
+                "score" : 0
+            }
+            ,
+            {
+                "name" : "Shaoib Ahmed",
+                "score" : 0
+            }
+            ,
+            {
+                "name": 'Salman Anwar',
+                "score" : 0
+            }
+            ,
+            {
+                "name" : "Burhan Khan",
+                "score" : 0
+            }
+            ,
+            {
+                "name": 'Noman Ajaz',
+                "score" : 0
+            }
+            ,
+            {
+                "name" : "Haseeb Ansari",
+                "score" : 0
+            }
+            ,
+            {
+                "name": 'Naeem Khan',
+                "score" : 0
+            }
+            ,
+            {
+                "name": 'ShahJehan Khan',
+                "score" : 0
+            }
+            ,
         ],
     }
 
@@ -110,27 +164,18 @@ function Scoring(props) {
         [foursBat2, SetFoursBat2] = useState(0),
         [sixesBat1, SetSixesBat1] = useState(0),
         [sixesBat2, SetSixesBat2] = useState(0),
+        [rateBat1, SetRateBat1] = useState(0),
+        [rateBat2, SetRateBat2] = useState(0),
         [strike, setStrike] = useState(bat1),
         [extras, setExtras] = useState([]),
         [scorepad, setScorepad] = useState([]),
-        [current_rr, setCurrent_rr] = useState(0.0)
+        [current_rr, setCurrent_rr] = useState(0.0),
+        [bowler, setBowler] = useState(match.team2_players[0].name),
+        [overBowler, setOverBowler] = useState(0),
+        [scoreBowler, setScoreBowler] = useState(0),
+        [wicketBowler, setWicketBowler] = useState(0),
+        [ecBowler, setEcBowler] = useState(0)
 
-        
-        
-    
-    // const toss_team = (team1, team2) => {
-    //     let result = '';
-    //     let team = Math.floor((Math.random() * 2) + 1);
-    //     if(team === 1)
-    //     {
-    //        result = team1;
-    //     }
-    //     else 
-    //     {
-    //         result = team2;
-    //     }
-    //     return result;
-    // }
 
     const changeStrike = () => {
         console.log({ORIGINALSTRIKE: strike});
@@ -211,24 +256,122 @@ function Scoring(props) {
         };
         setScorepad(scorepad => [...scorepad, {scoreObject}])
 
+        let run_rate = (newScore/(balls/6)).toFixed(2);
+            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2)
+            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2)
+            setCurrent_rr(run_rate)
+            SetRateBat1(newrate1)
+            SetRateBat2(newrate2)
+
         }
         else if(value.includes('lb'))
         {
+            setExtras(extras => [...extras, value])
+            let newvalue = Number(value.slice(0,0)+1);
+            let newScore= score+newvalue;
+            setScore(newScore);
+            let scoreObject = {
+            over: overs,
+            ball: overBalls,
+            value: value,
+            status: 0
+        };
+        setScorepad(scorepad => [...scorepad, {scoreObject}])
 
+        let run_rate = (newScore/(balls/6)).toFixed(2);
+            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2)
+            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2)
+            setCurrent_rr(run_rate)
+            SetRateBat1(newrate1)
+            SetRateBat2(newrate2)
+
+            let newscbal = scoreBowler + value;
+            setScoreBowler(newscbal);
+            let new_ec = (newscbal/overBalls).toFixed(2);
+            setEcBowler(new_ec)
+        }
+        else if(value.includes('b'))
+        {
+            setExtras(extras => [...extras, value])
+            let newvalue = Number(value.slice(0,0)+1);
+            let newScore= score+newvalue;
+            setScore(newScore);
+            let scoreObject = {
+            over: overs,
+            ball: overBalls,
+            value: value,
+            status: 0
+        };
+        setScorepad(scorepad => [...scorepad, {scoreObject}])
+
+        let run_rate = (newScore/(balls/6)).toFixed(2);
+            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2)
+            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2)
+            setCurrent_rr(run_rate)
+            SetRateBat1(newrate1)
+            SetRateBat2(newrate2)
+
+            let newscbal = scoreBowler + value;
+            setScoreBowler(newscbal);
+            let new_ec = (newscbal/overBalls).toFixed(2);
+            setEcBowler(new_ec)
         }
         else if(value.includes('nb'))
         {
+            setExtras(extras => [...extras, value])
+            let newvalue = Number(value.slice(0,0)+1);
+            let newScore= score+newvalue;
+            setScore(newScore);
+            let scoreObject = {
+            over: overs,
+            ball: overBalls,
+            value: value,
+            status: 0
+            };
 
+            setScorepad(scorepad => [...scorepad, {scoreObject}])
+            
+            let run_rate = (newScore/(balls/6)).toFixed(2);
+            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2)
+            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2)
+            setCurrent_rr(run_rate)
+            SetRateBat1(newrate1)
+            SetRateBat2(newrate2)
+
+            let newscbal = scoreBowler + value;
+            setScoreBowler(newscbal);
+            let new_ec = (newscbal/overBalls).toFixed(2);
+            setEcBowler(new_ec)
         }
         else if(value === 'undo')
         {
+            let i =0; let item;
+            while(i != scorepad.length)
+            {
+                item = scorepad[i].value;
+                i++;
+            }
 
+            let newvalue = Number(value.slice(0,0)-value);
+            let newScore= score-newvalue;
+            setScore(newScore);
+
+            let newBalls = balls - 1;
+            let newOverBalls = overBalls - 1
+            setBalls(newBalls);
+            setOverBalls(newOverBalls);
+
+            let newscbal = scoreBowler - value;
+            setScoreBowler(newscbal);
+            let new_ec = (newscbal/overBalls).toFixed(2);
+            setEcBowler(new_ec)
         }
         else if(value === 'wk')
         {
-            
             let newWickets = wickets+1;
             setWickets(newWickets);
+            let newballwik = wicketBowler+1;
+            setWicketBowler(newballwik); 
             let newOvers;
             let newBalls = balls + 1;
             let newOverBalls = overBalls+1;
@@ -239,8 +382,34 @@ function Scoring(props) {
                 newOverBalls = 0;
             }
             console.log("Overs: "+ newOvers +'.'+newOverBalls)
+            if(strike === bat1)
+            {
+                setBat1(match.team1_players[newWickets+1].name);
+                match.team1_players[newWickets -1 ].score = ScoreBat1;
+                SetScoreBat1(0);
+                SetBallsBat1(0);
+                SetFoursBat1(0);
+                SetSixesBat1(0);
+                SetRateBat1(0);
+                setStrike(bat1);
+            }
+            else
+            {
+                setBat2(match.team1_players[newWickets+1].name);
+                match.team1_players[newWickets - 0 ].score = ScoreBat1;
+                SetScoreBat2(0);
+                SetBallsBat2(0);
+                SetFoursBat2(0);
+                SetSixesBat2(0);
+                SetRateBat2(0);
+                setStrike(bat2);
+            }
             setBalls(newBalls);
-            setOverBalls(newOverBalls);
+            setOverBalls(newOverBalls); 
+            let newscbal = scoreBowler + value;
+            setScoreBowler(newscbal);
+            let new_ec = (newscbal/overBalls).toFixed(2);
+            setEcBowler(new_ec)
         }
         else
         {
@@ -249,8 +418,6 @@ function Scoring(props) {
             setScore(newScore);
 
             let newOvers ;
-            let newScoreBat1;
-            let newScoreBat2;
             let newBalls = balls + 1;
             let newOverBalls = overBalls+1;
             let scoreObject = {
@@ -259,6 +426,18 @@ function Scoring(props) {
                 value: value,
                 status: 1
             };
+
+            changeBatStats(value);
+            let run_rate = (newScore/(newBalls/6)).toFixed(2);
+            let newrate1 = ((ScoreBat1/ballsBat1)*100).toFixed(2);
+            let newrate2 = ((ScoreBat2/ballsBat2)*100).toFixed(2);
+            setCurrent_rr(run_rate)
+            SetRateBat1(newrate1)
+            SetRateBat2(newrate2)
+            let newscbal = scoreBowler + value;
+            setScoreBowler(newscbal);
+            let new_ec = (newscbal/overBalls).toFixed(2);
+            setEcBowler(new_ec)
             setScorepad(scorepad => [...scorepad, {scoreObject}])
             if( newOverBalls > 5)
             {
@@ -266,6 +445,7 @@ function Scoring(props) {
                 setOvers(newOvers);
                 newOverBalls = 0;
                 changeStrike();
+                setBowler(match.team2_players[2].name)
             }
             else{
                 newOvers = overs + 0;
@@ -273,62 +453,13 @@ function Scoring(props) {
             }
             console.log("Overs: "+ newOvers +'.'+newOverBalls)
             setBalls(newBalls);
-            
-            changeBatStats(value);
-            
+    
             setOverBalls(newOverBalls);
-            let run_rate = (newScore/(newBalls/6)).toFixed(2);
-            setCurrent_rr(run_rate)
+            
         }
     }  
     };
 
-    
-    // const toss = (team, choice) => {
-    //     let result = '';
-    //     let coin = Math.floor((Math.random() * 2) + 1);
-    //     console.log({team_to_chose : team})
-    //     console.log({choice : choice, coin: coin});
-    //     if(team === team1)
-    //     {
-    //         if(coin === choice)
-    //         {
-    //            result = team1;
-    //         }
-    //         else
-    //         {
-    //             result = team2;
-    //         }
-    //     }
-    //     else 
-    //     {
-    //         if(coin === choice)
-    //         {
-    //            result = team2;
-    //         }
-    //         else
-    //         {
-    //             result = team1;
-    //         }
-    //     }
-    //     console.log({toss_winner: result})
-    //     return result;
-    // }
-
-    // const toss_descision = () => {
-
-    // }
-    // const renderOver = (item) => {
-    //     console.log(item)
-    //     return(
-    //         <View>
-    //             <ScrollView  horizontal={true}>
-    //                 <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', margin: 20, textAlign:'center'}}>{item.run}</Text>
-    //             </ScrollView>
-    //         </View>
-            
-    //     )
-    // }
 
     let dispatch = useDispatch();
     return (
@@ -341,7 +472,7 @@ function Scoring(props) {
         //   Screen={"Scoring"}
           isLogout={true}
           Logout={() => { dispatch(logout())
-            props.navigation.navigate('Login');
+            props.navigation.navigate('landing');
           }}
         />
         {console.log({StrikeChanged: strike})}
@@ -350,7 +481,7 @@ function Scoring(props) {
         <View style={{ flex:0.08, justifyContent:'center', alignItems: 'center'}}>
           <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', marginTop: 20}}>SCORING CENTER</Text>
         </View>
-        <View style={{flex: 0.14, flexDirection: 'row', borderWidth: 2, borderColor: '#507E14'}}>
+        <View style={{flex: 0.15, flexDirection: 'row', borderWidth: 2, borderColor: '#507E14'}}>
             <View style={{flex: 0.3,justifyContent:'center', alignItems: 'center', padding: 20, backgroundColor: '#507E14', }}>
                 <Text style={{fontWeight: '800', fontSize: 20, color: 'white', }}>{team1}{'\n'}{score}/{wickets}
                 </Text>
@@ -380,7 +511,7 @@ function Scoring(props) {
                         <DataTable.Cell numeric>{ballsBat1}</DataTable.Cell>
                         <DataTable.Cell numeric>{foursBat1}</DataTable.Cell>
                         <DataTable.Cell numeric>{sixesBat1}</DataTable.Cell>
-                        <DataTable.Cell numeric>0.0</DataTable.Cell>
+                        <DataTable.Cell numeric>{rateBat1}</DataTable.Cell>
                     </DataTable.Row>
 
                     <DataTable.Row style={{}}>
@@ -389,7 +520,7 @@ function Scoring(props) {
                         <DataTable.Cell numeric>{ballsBat2}</DataTable.Cell>
                         <DataTable.Cell numeric>{foursBat2}</DataTable.Cell>
                         <DataTable.Cell numeric>{sixesBat2}</DataTable.Cell>
-                        <DataTable.Cell numeric>0.0</DataTable.Cell>
+                        <DataTable.Cell numeric>{rateBat2}</DataTable.Cell>
                     </DataTable.Row>
                 </DataTable>
             </View>
@@ -404,12 +535,11 @@ function Scoring(props) {
                     </DataTable.Header>
 
                     <DataTable.Row style={{}}>
-                        <DataTable.Cell numeric>{bat1.slice(0,10)}</DataTable.Cell>
-                        <DataTable.Cell numeric>{ScoreBat1}</DataTable.Cell>
-                        <DataTable.Cell numeric>0</DataTable.Cell>
-                        <DataTable.Cell numeric>0</DataTable.Cell>
-                        <DataTable.Cell numeric>0</DataTable.Cell>
-                        <DataTable.Cell numeric>0.0</DataTable.Cell>
+                        <DataTable.Cell numeric>{bowler.slice(0,10)}</DataTable.Cell>
+                        <DataTable.Cell numeric>{overBowler}.{overBalls}</DataTable.Cell>
+                        <DataTable.Cell numeric>{scoreBowler}</DataTable.Cell>
+                        <DataTable.Cell numeric>{wicketBowler}</DataTable.Cell>
+                        <DataTable.Cell numeric>{ecBowler}</DataTable.Cell>
                     </DataTable.Row>
 
                 </DataTable>
@@ -461,11 +591,11 @@ function Scoring(props) {
 
             <View style={{flex: 0.25, flexDirection: 'row', alignItems: 'stretch',}}>
                 <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}} 
-                onPress={() => handleScore('lb')}>
+                onPress={() => handleScore('0lb')}>
                     <Text style={{textAlign: 'center', color: 'white',fontSize:38}}>L</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}
-                onPress={() => handleScore('b')}>
+                onPress={() => handleScore('0b')}>
                     <Text style={{textAlign: 'center', color: 'white', fontSize:38}}>B</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}
@@ -479,19 +609,23 @@ function Scoring(props) {
             </View>
 
             <View style={{flex: 0.25, flexDirection: 'row', alignItems: 'stretch',}}>
-                <View style={{paddingHorizontal: 30, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}>
+                {/* <View style={{paddingHorizontal: 30, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}>
                 <ModalDropdown options={['0wd', '1wd', '2wd', '3wd', '4wd']} defaultValue={'Wd'}
                 textStyle={{color: 'white', fontSize: 30}} style={{width: 50, height: 70, paddingTop: 20}}
                 dropdownStyle={{width: 60}} onSelect={(value) => handleScore(value)}
                 />
-                </View>
+                </View> */}
                 <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}
-                onPress={() => handleScore('2')}>
-                    <Text style={{textAlign: 'center', color: 'white', fontSize:38}}>2</Text>
+                onPress={() => handleScore('0wd')}>
+                    <Text style={{textAlign: 'center', color: 'white', fontSize:38}}>Wd</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}
-                onPress={() => handleScore('3')}>
-                    <Text style={{textAlign: 'center', color: 'white',fontSize:38}}>3</Text>
+                onPress={() => handleScore('p')}>
+                    <Text style={{textAlign: 'center', color: 'white', fontSize:38}}>P</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}
+                onPress={() => handleScore('0nb')}>
+                    <Text style={{textAlign: 'center', color: 'white',fontSize:38}}>Nb</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white'}}
                 onPress={() => handleScore('0')}>
@@ -504,14 +638,6 @@ function Scoring(props) {
                 onPress={() => changeStrike()}>
                     <Text style={{textAlign: 'center', color: 'white',fontSize:20}}>change strike</Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}
-                onPress={() => handleScore('2')}>
-                    <Text style={{textAlign: 'center', color: 'white', fontSize:38}}>2</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{padding: 15, paddingHorizontal:35, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white', borderRightWidth:1}}
-                onPress={() => handleScore('3')}>
-                    <Text style={{textAlign: 'center', color: 'white',fontSize:38}}>3</Text>
-                </TouchableOpacity> */}
                 <TouchableOpacity style={{padding: 15, paddingHorizontal:75, paddingVertical:10, marginTop:10, borderBottomWidth:1, borderColor: 'white'}}
                 onPress={() => handleScore('lb')}>
                     {/* <Text style={{textAlign: 'center', color: 'white',fontSize:38}}>4</Text> */}

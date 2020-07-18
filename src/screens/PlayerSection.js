@@ -254,32 +254,10 @@ function PlayerSection(props) {
     }
   ]
   
-
-  
-  // const [players, setPlayers] = useState('');
   let players = useSelector(state => state.token.allPlayers)
   
   let dispatch = useDispatch();
 
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   try{
-    //     let response = await dispatch(GetAllPlayers());
-    //     if(response.type === 'PLAYER_SUCCESS')
-    //     {
-    //       console.log({RESPONSE_PLAYERS: response.data.data});
-    //       await setPlayers(response.data.data)
-    //     }
-    //     else{
-    //       {() => Alert.alert('No player found')}
-    //     }
-    //   }catch(err)
-    //   {
-    //     console.log(err)
-    //   }
-    // };
-    // fetchData();
-  }, [])
 
     return (
         <Container>

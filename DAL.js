@@ -13,7 +13,7 @@ export const DataAccess = {
   GetToken: async (FetchData) => {
     var URL = Domain + FetchData.url;
 
-    if (FetchData.params) {
+    if (FetchData.params) { 
       URL = URL + FetchData.params;
     }
     try {
@@ -23,6 +23,7 @@ export const DataAccess = {
       return error;
     }
   },
+
   Post: async (URL, params) => {
     console.log(Domain+URL)
     let response = await fetch(Domain + URL, {
@@ -53,7 +54,59 @@ export const DataAccess = {
       return await ReturnResponse(response);
     }
   },
-  Get: async (FetchData) => {
+
+  Delete: async (Endpoint) => {
+    var URL = Domain + Endpoint;
+
+    let Token = await getToken();
+
+    if (Token != null) {
+      let response = await fetch(URL, {
+        headers: {
+          "Content-Type": "application/json",
+          'x-auth-token': Token,
+        },
+        method: "DELETE",
+      });
+      return await ReturnResponse(response);
+    }
+  },
+
+  Put: async (Endpoint) => {
+    var URL = Domain + Endpoint;
+
+    let Token = await getToken();
+
+    if (Token != null) {
+      let response = await fetch(URL, {
+        headers: {
+          "Content-Type": "application/json",
+          'x-auth-token': Token,
+        },
+        method: "PUT",
+      });
+      return await ReturnResponse(response);
+    }
+  },
+
+  Get: async (Endpoint) => {
+    var URL = Domain + Endpoint;
+
+    let Token = await getToken();
+
+    if (Token != null) {
+      let response = await fetch(URL, {
+        headers: {
+          "Content-Type": "application/json",
+          'x-auth-token': Token,
+        },
+        method: "GET",
+      });
+      return await ReturnResponse(response);
+    }
+  },
+
+  GetA: async (FetchData) => {
     var URL = Domain + FetchData.url;
     if (FetchData.params) {
       URL = URL + FetchData.params;

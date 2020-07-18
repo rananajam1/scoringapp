@@ -1,4 +1,4 @@
-import { DataAccess } from "../../../../DAL";
+import { DataAccess, Domain } from "../../../../DAL";
 import setAuthToken from '../../../../src/utilities/setAuthToken';
 import ApiEndPoint from "../../../../ApiEndpoints";
 import axios from 'axios';
@@ -60,23 +60,15 @@ export const logoutUser = () => async dispatch => {
 
 // Load user
 export const loadUser = () => async dispatch => {
-  let token = await AsyncStorage.getItem('@token');
-  console.log('User Load Started')
-  if(token) {
-    const config = {
-      headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token
-      }
-    }
-    try {
-      const res = await axios.get('https://dazzling-yosemite-22846.herokuapp.com/api/login', config);
-       dispatch(setUserInfo(res.data.user));
-       return dispatch(success(res));
-    } catch (err) {
+  try {
+    let Endpoint = `/api/login`;
+    let response = await DataAccess.Get(Endpoint);
+    console.log(response);
+    dispatch(setUserInfo(response));
+    return dispatch(success(response));
+  } catch (err) {
       console.log('user load error')
       dispatch(error(err || 'ERROR'))
-    }
   }
 }
 
@@ -95,7 +87,6 @@ export const UserLogin = (Email, Password) => async dispatch => {
       dispatch(getToken(response.token));
       dispatch(AuthToken(response.token));
       dispatch(loadUser());
-      console.log({LOGIN_Response: response})
       return dispatch(success(response));
     }
   } catch (error) {

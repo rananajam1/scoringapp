@@ -16,8 +16,8 @@ import {CreatePlayer} from '../redux/js/actions/PlayerActions/PlayerActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Switch} from 'native-base';
 import DatePicker from 'react-native-datepicker';
-import {CreateMatch} from '../redux/js/actions/TeamActions/TeamActions';
 import {LoadCricpocket} from '../redux/js/actions/CricpocketActions/CricpocketActions';
+import { CreateMatch } from '../redux/js/actions/MatchActions/MatchActions';
 
 function MatchForm(props) {
   let cricpocket = useSelector(state => state.token.cricpocket);

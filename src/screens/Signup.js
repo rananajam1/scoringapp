@@ -7,6 +7,7 @@ import {checkInputs} from '../utilities';
 import {
   UserSignup,
   loading,
+  loadUser,
 } from '../../redux/js/actions/AuthActions/AuthActions';
 
 function Signup(props) {
@@ -37,14 +38,13 @@ function Signup(props) {
       else{
         if (confirm === password) {
           let response = await dispatch(UserSignup(SignupObject))
-          // if (response.type === 'AUTH_SUCCESS') {
-            .then(Alert.alert('Registration Succesful', '', [{text: 'Ok'}]), props.navigation.navigate('AppLanding'))
-            .catch(Alert.alert('Registration Failed'))
-              
-          // }
-          // else {
-            
-          // }
+          if (response.type === 'AUTH_SUCCESS') {
+            dispatch(loadUser());
+            Alert.alert('Registration success');    
+          }
+          else {
+            Alert.alert('Registration success');
+          }
         }
         else{
           Alert.alert('Password does not match', '', [{text: 'Ok'}]);
@@ -126,54 +126,6 @@ function Signup(props) {
             </View>
         </KeyboardAvoidingView>
     </View>
-    // <View
-    //   style={{
-    //     flex: 1,
-    //     flexDirection: 'column',
-    //     justifyContent: 'space-evenly',
-    //   }}>
-    //   <Input
-    //     onTextAdd={text => {
-    //       setEmail(text);
-    //     }}
-    //     placeholderTitle="Email"
-    //     type="username"
-    //     value={email}
-    //   />
-    //   <Picker
-    //     selectedValue={role}
-    //     style={{height: 50, width: 150}}
-    //     onValueChange={(itemValue, itemIndex) => setRole(itemValue)}>
-    //     <Picker.Item label="Select" value="" />
-    //     <Picker.Item label="Player" value="Player" />
-    //     <Picker.Item label="Team Manager" value="Team Manager" />
-    //     <Picker.Item label="Ground Manager" value="Ground Manager" />
-    //     <Picker.Item label="Organizer" value="Organizer" />
-    //     <Picker.Item label="Umpire" value="Umpire" />
-    //   </Picker>
-    //   <Input
-    //     onTextAdd={text => {
-    //       setPassword(text);
-    //     }}
-    //     placeholderTitle="Password"
-    //     type="password"
-    //     value={password}
-    //   />
-    //   <Input
-    //     onTextAdd={text => {
-    //       setConfirm(text);
-    //     }}
-    //     placeholderTitle="Confirm Password"
-    //     type="password"
-    //     value={confirm}
-    //   />
-    //   <Button
-    //     title="Submit"
-    //     onPress={e => {
-    //       handleSubmit();
-    //     }}
-    //   />
-    // </View>
   );
 }
 

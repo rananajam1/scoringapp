@@ -22,28 +22,6 @@ function MyTournaments(props) {
   
   let dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-          let response = await dispatch(LoadMyVenues());
-          if (response.type === 'TOURNAMENT_SUCCESS') {
-            console.log('Tournament Loaded')
-            console.log({TournamentLoaded: response.data.data})
-            await setTournament(response.data.data)
-          }
-          else{
-              console.log('Tournament loading failed')
-          }
-      } catch (error) {
-        console.log({catch: error})
-      }
-  };
-    
-    fetchData();
-  }, []);
-
- 
-
     return (
         <Container style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
             {console.log({TournamentSTATE: tournament})}

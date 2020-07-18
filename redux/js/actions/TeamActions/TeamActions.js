@@ -23,20 +23,18 @@ export const setTeamInfo = Info => ({
   Info,
 });
 
+export const setAllTeamsInfo = Info => ({
+  type: 'SET_ALL_TEAMS_INFO',
+  Info,
+});
+
 export const LoadTeam = () => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('@token');
-    if (token) {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      };
-      const res = await axios.get(Domain + '/api/team/my-team', config);
-      dispatch(setTeamInfo(res.data));
-      return dispatch(success(res));
-    }
+    let Endpoint = `/api/team/my-team`;
+    let response = await DataAccess.Get(Endpoint);
+    console.log(response);
+    dispatch(setTeamInfo(response));
+    return dispatch(success(response));
   } catch (error) {
     console.log('load team error');
     return dispatch(error(error || 'ERROR'));
@@ -45,19 +43,11 @@ export const LoadTeam = () => async dispatch => {
 
 export const CreateTeam = Obj => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('@token');
-    if (token) {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      };
-      const res = await axios.post(Domain + '/api/team', Obj, config);
-      console.log({CreateTeam: res.data});
-      dispatch(setTeamInfo(res.data));
-      return dispatch(success(res));
-    }
+      let Endpoint = `/api/team`;
+      let response = await DataAccess.PostSecured(Endpoint, Obj);
+      console.log(response);
+      dispatch(LoadTeam());
+      return dispatch(success(response));
   } catch (error) {
     console.log('create team error');
     dispatch(error(error || 'ERROR'));
@@ -66,17 +56,11 @@ export const CreateTeam = Obj => async dispatch => {
 
 export const GetAllTeams = () => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('@token');
-    if (token) {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      };
-      const res = await axios.get(Domain + '/api/team', config);
-      return dispatch(success(res));
-    }
+    let Endpoint = `/api/team`;
+    let response = await DataAccess.Get(Endpoint);
+    console.log(response);
+    dispatch(setAllTeamsInfo(response));
+    return dispatch(success(response));
   } catch (error) {
     console.log('get all teams error');
     dispatch(error(error || 'ERROR'));
@@ -85,59 +69,26 @@ export const GetAllTeams = () => async dispatch => {
 
 export const GetTeamPlayers = () => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('@token');
-    if (token) {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      };
-      const res = await axios.get(
-        Domain + '/api/team/my-team/me/players',
-        config,
-      );
-      console.log({AllTeamPlayers: res.data});
-      return dispatch(success(res));
-    }
+    let Endpoint = `/api/team/my-team/me/players`;
+    let response = await DataAccess.Get(Endpoint);
+    console.log(response);
+    dispatch(setTeamPlayersInfo(response));
+    return dispatch(success(response));
   } catch (error) {
     console.log('get my team players error');
     dispatch(error(error || 'ERROR'));
   }
 };
 
-export const AddNewPlayer = id => async dispatch => {
+export const AddNewPlayer = Obj => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('@token');
-    if (token) {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      };
-      console.log(id);
-      const res = await axios.get(
-        Domain + '/api/team/invite_player',
-        id,
-        config,
-      );
-      console.log({AddTeamPlayer: res.data});
-      return dispatch(success(res));
-    }
+    let Endpoint = `/api/team/invite_player`;
+      let response = await DataAccess.PostSecured(Endpoint, Obj);
+      console.log(response);
+      return dispatch(success(response));
   } catch (error) {
     console.log('invite player in team error');
     return dispatch(error(error || 'ERROR'));
   }
 };
 
-export const CreateMatch = obj => async dispatch => {
-  try {
-    let Endpoint = `/api/match/create`;
-    let response = await DataAccess.PostSecured(Endpoint, obj);
-    return dispatch(success(response));
-  } catch (error) {
-    console.log('create match error');
-    return error;
-  }
-};

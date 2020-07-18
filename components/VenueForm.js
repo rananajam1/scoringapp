@@ -7,6 +7,7 @@ import {checkInputs} from '../src/utilities';
 import ImagePicker from 'react-native-image-picker';
 import { CreateTeam } from '../redux/js/actions/TeamActions/TeamActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import { CreateVenue } from '../redux/js/actions/VenueActions/VenueActions';
 
 function Venuefrom(props) {
 
@@ -19,7 +20,7 @@ function Venuefrom(props) {
     let dispatch = useDispatch();
 
     const handleSubmit = async () => {
-            let check = checkInputs([city, category, name, avatar]);
+            let check = checkInputs([city, fee , name, address, avatar]);
             let VenueObject = {
               name: name,
               city: city, 

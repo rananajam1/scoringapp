@@ -32,7 +32,7 @@ export const setAllVenueInfo = Info => ({
 
 
 
-export const LoadMyVenues = () => async dispatch => {
+export const LoadTeamStats = () => async dispatch => {
   try {
     let Endpoint = `/api/venue/my`;
     let response = await DataAccess.Get(Endpoint);
@@ -45,7 +45,7 @@ export const LoadMyVenues = () => async dispatch => {
   }
 };
 
-export const CreateVenue = (Obj) => async dispatch => {
+export const LoadPlayerStats = (Obj) => async dispatch => {
     try {
       let Endpoint = `/api/venue`;
       let response = await DataAccess.PostSecured(Endpoint, Obj);
@@ -66,18 +66,6 @@ export const GetAllVenues = () => async dispatch => {
       return dispatch(success(response));
     } catch (error) {
       console.log('get all venues error')
-      dispatch(error(error || "ERROR"));
-    }
-  };
-
-export const DeleteVenue = (_id) => async dispatch => {
-    try {
-      let Endpoint = `api/venue/${_id}/delete`;
-      let response = await DataAccess.Delete(Endpoint);
-      console.log(response);
-      return dispatch(success(response));
-    } catch (error) {
-      console.log('delete venues error')
       dispatch(error(error || "ERROR"));
     }
   };

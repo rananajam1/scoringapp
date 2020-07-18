@@ -1,7 +1,6 @@
 import { DataAccess, Domain } from "../../../../DAL";
 import ApiEndPoint from "../../../../ApiEndpoints";
 import axios from 'axios';
-import { AsyncStorage } from "react-native";
 
 
 export const loading = bool => ({
@@ -33,19 +32,11 @@ export const setAllPlayersInfo = Info => ({
 
 export const LoadPlayer = () => async dispatch => {
   try {
-    let token = await AsyncStorage.getItem('@token');
-    if(token)
-    {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': token
-            }
-        }
-        const res = await axios.get(Domain+'/api/player/me', {headers : config.headers});
-         dispatch(setPlayerInfo(res.data))
-         return dispatch(success(res));
-    }
+    let Endpoint = `/api/player/me`;
+    let response = await DataAccess.Get(Endpoint);
+    console.log(response);
+    dispatch(setPlayerInfo(response));
+    return dispatch(success(response));
   } catch (error) {
     console.log('load player error')
     return dispatch(error(error || "ERROR"));
@@ -54,19 +45,10 @@ export const LoadPlayer = () => async dispatch => {
 
 export const CreatePlayer = (Obj) => async dispatch => {
     try {
-        let token = await AsyncStorage.getItem('@token');
-        if(token)
-        {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token':  token
-                }
-            }
-            const res = await axios.post(Domain+'/api/player', Obj, config);
-             dispatch(setPlayerInfo(res.data))
-             return dispatch(success(res));
-        }
+      let Endpoint = `/api/player`;
+      let response = await DataAccess.PostSecured(Endpoint, Obj);
+      dispatch(LoadPlayer());
+      return dispatch(success(response));
     } catch (error) {
       console.log('create player error')
       dispatch(error(error || "ERROR"));
@@ -76,21 +58,39 @@ export const CreatePlayer = (Obj) => async dispatch => {
 // Get all players
   export const GetAllPlayers = () => async dispatch => {
     try {
-        let token = await AsyncStorage.getItem('@token');
-        if(token)
-        {
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-auth-token':  token
-                }
-            }
-            const res = await axios.get(Domain+'/api/player', config);
-            dispatch(setAllPlayersInfo(res.data));
-            return dispatch(success(res));
-        }
+        let Endpoint = `/api/player`;
+        let response = await DataAccess.Get(Endpoint);
+        dispatch(setAllPlayersInfo(response));
+        return dispatch(success(response));
+      
     } catch (error) {
       console.log('get all player error')
+      dispatch(error(error || "ERROR"));
+    }
+  };
+
+  export const AcceptRequest = (request_id) => async dispatch => {
+    try {
+        let Endpoint = `/api/player`;
+        let response = await DataAccess.Get(Endpoint);
+        dispatch(setAllPlayersInfo(response));
+        return dispatch(success(response));
+      
+    } catch (error) {
+      console.log('get all player error')
+      dispatch(error(error || "ERROR"));
+    }
+  };
+
+  export const FindPlayer = (Obj) => async dispatch => {
+    try {
+      let Endpoint = `/api/player/find`;
+      console.log(Obj)
+      let response = await DataAccess.PostSecured(Endpoint, Obj);
+      console.log(response)
+      return dispatch(success(response));
+    } catch (error) {
+      console.log('find player error')
       dispatch(error(error || "ERROR"));
     }
   };

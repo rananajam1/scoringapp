@@ -11,56 +11,45 @@ import { LoadProfile } from '../../redux/js/actions/ProfileActions/ProfileAction
 import { CreateCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 import { LoadPlayer } from '../../redux/js/actions/PlayerActions/PlayerActions';
 import VenueForm from '../../components/VenueForm';
-import { LoadMyVenues, CreateVenue } from '../../redux/js/actions/VenueActions/VenueActions';
+import { LoadMyVenues, CreateVenue, DeleteVenue } from '../../redux/js/actions/VenueActions/VenueActions';
 import VenueCard from '../../components/VenueCard';
 
 function MyVenues(props) {
 
     let user = useSelector(state => state.token.userData);
     let profile = useSelector(state => state.token.profile);
-    let playerState = useSelector(state => state.token.player);
-    let [player, setPlayer] = useState('');
-    let [venue, setVenue] = useState('')
-  
+    let venues = useSelector(state => state.token.myVenues);
+
   let dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-          let response = await dispatch(LoadMyVenues());
-          if (response.type === 'VENUE_SUCCESS') {
-            console.log('Venue Loaded')
-            console.log({VenueLoaded: response.data.data})
-            await setVenue(response.data.data)
-          }
-          else{
-              console.log('Venue loading failed')
-          }
-      } catch (error) {
-        console.log({catch: error})
-      }
-  };
-    
-    fetchData();
-  }, []);
+  const handleSubmit = async(value) => {
+    let response = await dispatch(DeleteVenue(value));
+    if(response.type === 'VENUE_SUCCESS')
+    {
+      Alert.alert('Venue Deleted Succesfully')
+    }
+    else
+    {
+      Alert.alert('Venue Error')
+    }
+  }
 
- 
 
     return (
         <Container style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
-            {console.log({VENUESTATE: venue})}
+            {console.log({VENUESTATE: venues})}
                <AppHeader
                   isMenu={true}
                   OpenMenu={() => {
                     props.navigation.toggleDrawer();
                   }}
-                  Screen={"Home"}
+                  // Screen={"Home"}
                   isLogout={true}
                   Logout={() => { dispatch(logoutUser())
                   props.navigation.navigate('landing');
                   }}
                 />
-                {venue && venue
+                {venues && venues
                 ? 
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
                 <View style={{flex: 0.05, justifyContent:'flex-start', alignItems: 'center', margin: 20}}>
@@ -68,8 +57,19 @@ function MyVenues(props) {
                 </View>
                 <View style={{flex: 0.95, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
                 <FlatList
-                    data={venue}
-                    renderItem={({ item }) => <VenueCard children={venue}/>}
+                    data={venues}
+                    renderItem={({ item }) => 
+                    <View style= {{justifyContent: 'center', alignItems: 'center'}}>
+                       <Image source={{uri: item.avatar}} style={{height: 200, width:200, borderRadius: 200/2, marginBottom:10}}/>
+                      <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Name : {item.name}</Text>
+                      <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>City : {item.city}</Text>
+                      <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Fee : {item.fee}</Text>
+                      <TouchableOpacity style={{padding: 20}} onPress = {() => handleSubmit(item._id)}>
+                        {console.log('Api - '+item._id)}
+                          <Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 80, textAlign:'center'}}>Delete</Text> 
+                      </TouchableOpacity>
+                    </View>
+                    }
                     keyExtractor={item => item._id}
                 />
                 </View>

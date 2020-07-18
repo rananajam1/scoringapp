@@ -29,11 +29,10 @@ import AddPlayer from './components/AddPlayer';
 import ScoreCard from './src/screens/ScoreCard';
 import Requests from './src/screens/Requests';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUser, error } from './redux/js/actions/AuthActions/AuthActions';
-import { overlay } from 'react-native-paper';
 import MyTournaments from './src/screens/MyTournaments';
 import MatchForm from './components/MatchForm';
 import JoinMatchForm from './components/JoinMatchForm';
+import Toss from './components/Toss';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -79,21 +78,7 @@ function CustomDrawerContent(props) {
 
 function AppStack() {
 
-  const dispatch = useDispatch();
-  const [role, setRole] = useState('')
-
-  let state = useSelector(state => state.token.userData)
-
-  useEffect(() => {
-    // try{
-    //   let res = dispatch(loadUser())
-    //   .then(setRole(res))
-    //   .catch(error)   
-    // }catch(err)
-    // {
-    //   console.log(err)
-    // }
-  })
+  let state = useSelector(state => state.token.userData.user)
 
   return(
     <Drawer.Navigator backBehavior= 'history' drawerType='front' hideStatusBar = 'true' statusBarAnimation='fade'
@@ -119,6 +104,7 @@ function AppStack() {
       <Drawer.Screen name="Matches" component={MatchSection} />
       <Drawer.Screen name="Venues" component={VenueSection} />
       <Drawer.Screen name="Umpires" component={CricPocket} />
+      <Drawer.Screen name="Toss" component={Toss} />
       <Drawer.Screen name="Requests" component={Requests} />
       <Drawer.Screen name="Scoring" component={Tabs} />
     </Drawer.Navigator>

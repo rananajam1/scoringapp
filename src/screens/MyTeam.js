@@ -21,6 +21,7 @@ function MyTeam(props) {
     let [team, setTeam] = useState('');
     let [player, setPlayer] = useState('');
     let [teamPlayers, setTeamPlayers] = useState('');
+
   let dummy = 
   {
     "t20": {
@@ -50,31 +51,31 @@ function MyTeam(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-          let response1 = await dispatch(LoadPlayer());
-          if (response1.type === 'PLAYER_SUCCESS') {
-            console.log('Player Loaded')
-            await setPlayer(response.data.data)
-            if(!teamState || !teamState.name)
-            {
-              let response2 = await dispatch(LoadTeam());
-              if(response2.type === 'TEAM_SUCCESS')
-              {
-                let response3 = await dispatch(GetTeamPlayers())
-                if(response3.type === 'TEAM_SUCCESS')
-                {
-                  await setTeamPlayers(response.data.data);
-                }
-                // await setPlayer(response.data.data)
-              }
-            }
-            else
-            {
-              console.log('Team State exists')
-            }
-          }
-          else{
-              console.log('Player loading failed')
-          }
+          // let response1 = await dispatch(LoadPlayer());
+          // if (response1.type === 'PLAYER_SUCCESS') {
+          //   console.log('Player Loaded')
+          //   await setPlayer(response.data.data)
+          //   if(!teamState || !teamState.name)
+          //   {
+          //     let response2 = await dispatch(LoadTeam());
+          //     if(response2.type === 'TEAM_SUCCESS')
+          //     {
+          //       let response3 = await dispatch(GetTeamPlayers())
+          //       if(response3.type === 'TEAM_SUCCESS')
+          //       {
+          //         await setTeamPlayers(response.data.data);
+          //       }
+          //       // await setPlayer(response.data.data)
+          //     }
+          //   }
+          //   else
+          //   {
+          //     console.log('Team State exists')
+          //   }
+          // }
+          // else{
+          //     console.log('Player loading failed')
+          // }
       } catch (error) {
         console.log({catch: error})
       }
@@ -97,6 +98,7 @@ function MyTeam(props) {
                   props.navigation.navigate('landing');
                   }}
                 />
+                {console.log({TeamState: teamState})}
                 {teamState && teamState.name
                 ? 
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
