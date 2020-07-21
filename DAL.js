@@ -1,7 +1,7 @@
 import { AsyncStorage } from "react-native";
 
-export const Domain = "https://dazzling-yosemite-22846.herokuapp.com";
-// export const Domain = "http://localhost:4000"
+// export const Domain = "https://dazzling-yosemite-22846.herokuapp.com";
+export const Domain = "http://localhost:4000"
 
 
 export const getToken = async () => {

@@ -21,29 +21,53 @@ function MyPlayer(props) {
   let dummy = 
   {
     "t20": {
-      'matches' : 20,
-      'out' : 15,
-      'runs' : 350,
-      'balls' : 289,
-      'fours' : 21,
-      'sixes' : 15,
-      'thirties' : 4,
-      'fifties' : 2,
+      'matches' : 0,
+      'out' : 0,
+      'runs' : 0,
+      'balls' : 0,
+      'fours' : 0,
+      'sixes' : 0,
+      'thirties' : 0,
+      'fifties' : 0,
       'centuries' : 0,
-      'highest' : 78
+      'highest' : 0
     } ,
     "oneday": {
-      'matches' : 15,
-      'out' : 13,
-      'runs' : 589,
-      'balls' : 450,
-      'fours' : 42,
-      'sixes' : 36,
-      'thirties' : 6,
-      'fifties' : 3,
-      'centuries' : 1,
-      'highest' : 121
+      'matches' : 0,
+      'out' : 0,
+      'runs' : 0,
+      'balls' : 0,
+      'fours' : 0,
+      'sixes' : 0,
+      'thirties' : 0,
+      'fifties' : 0,
+      'centuries' : 0,
+      'highest' : 0
     } ,
+    // "t20": {
+    //   'matches' : 20,
+    //   'out' : 15,
+    //   'runs' : 350,
+    //   'balls' : 289,
+    //   'fours' : 21,
+    //   'sixes' : 15,
+    //   'thirties' : 4,
+    //   'fifties' : 2,
+    //   'centuries' : 0,
+    //   'highest' : 78
+    // } ,
+    // "oneday": {
+    //   'matches' : 15,
+    //   'out' : 13,
+    //   'runs' : 589,
+    //   'balls' : 450,
+    //   'fours' : 42,
+    //   'sixes' : 36,
+    //   'thirties' : 6,
+    //   'fifties' : 3,
+    //   'centuries' : 1,
+    //   'highest' : 121
+    // } ,
     "test": {
       'matches' : 0,
       'out' : 0,

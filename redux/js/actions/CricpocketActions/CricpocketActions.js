@@ -42,10 +42,11 @@ export const LoadCricpocket = () => async dispatch => {
 
 
 //Find a cricpocket Account
-export const LoadReceiver = (receiver) => async dispatch => {
+export const LoadReceiver = (Obj) => async dispatch => {
   try {
     let Endpoint = `/api/cricpocket/find`;
-        let response = await DataAccess.PostSecured(Endpoint, receiver);
+    console.log(Obj)
+        let response = await DataAccess.PostSecured(Endpoint, Obj);
         console.log(response);
         return dispatch(success(response));
   } catch (error) {

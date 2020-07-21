@@ -75,8 +75,8 @@ function MatchForm(props) {
     if (format != 'OneDay' && format === 'Test') {
       setOvers('Unlimited');
     }
-
-    let check = checkInputs([format, overs, date]);
+    
+    let check = checkInputs([format, overs, date, venue]);
     let MatchObject = {
       format: format,
       overs: overs,
@@ -94,10 +94,15 @@ function MatchForm(props) {
         console.log(response)
         // console.log({CreatematchResponse: response.data.data});
         if (response.type === 'TEAM_SUCCESS') {
-          Alert.alert('Match Created');
-          props.navigation.navigate('AppLanding');
+          if(response.data.msg)
+            {
+              Alert.alert('ALERT', response.data.msg)
+            }
+            else{
+              Alert.alert('Match Created');
+            }
         } else {
-          Alert.alert('Match Failed');
+          Alert.alert('Match Created');
         }
       }
     } else {
@@ -144,14 +149,6 @@ function MatchForm(props) {
           <Picker.Item label="OneDay" value="OneDay" />
           <Picker.Item label="Test" value="Test" />
         </Picker>
-        <Picker
-          selectedValue={venue}
-          onValueChange={itemValue => setVenue(itemValue)}>
-          <Picker.Item label="Select Venue" value="" />
-          {venues.map(location => (
-            <Picker.Item label={location.address} value={location.address} />
-          ))}
-        </Picker>
         {format === 'OneDay' && (
           <View style={{alignItems: 'center'}}>
             <TextInput
@@ -164,7 +161,15 @@ function MatchForm(props) {
             />
           </View>
         )}
-        <View style={{flexDirection: 'row', marginTop: 20, padding: 20}}>
+        <Picker
+          selectedValue={venue}
+          onValueChange={itemValue => setVenue(itemValue)}>
+          <Picker.Item label="Select Venue" value="" />
+          {venues.map(location => (
+            <Picker.Item label={location.name} value={location._id} />
+          ))}
+        </Picker>
+        <View style={{flexDirection: 'row', padding: 20}}>
           <Text style={{marginRight: 40, fontSize: 20}}>
             Want to earn? Then Make a bid
           </Text>

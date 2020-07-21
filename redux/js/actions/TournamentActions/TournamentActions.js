@@ -10,58 +10,57 @@ export const loading = bool => ({
 });
 
 export const success = success => ({
-  type: "MATCH_SUCCESS",
+  type: "TOURNAMENT_SUCCESS",
   data: success
 });
 
 export const error = error => ({
-  type: "MATCH_ERROR",
+  type: "TOURNAMENT_ERROR",
   error
 });
 
 
-export const setMatchInfo = Info => ({
-  type: "SET_MATCH_INFO",
+export const setTOURNAMENTInfo = Info => ({
+  type: "SET_TOURNAMENT_INFO",
   Info
 });
 
-export const setAllMatchesInfo = Info => ({
-  type: "SET_ALL_MATCHES_INFO",
+export const setAllTournamentsInfo = Info => ({
+  type: "SET_ALL_TOURNAMENTES_INFO",
   Info
 });
 
-export const LoadMyMatches = () => async dispatch => {
+export const LoadTournament = () => async dispatch => {
   try {
-    let Endpoint = `/api/match/my`;
+    let Endpoint = `/api/tournament/my`;
       let response = await DataAccess.Get(Endpoint);
-      console.log({mymatch: response});
+      console.log(response);
       dispatch(setMatchInfo(response))
       return dispatch(success(response));
   } catch (error) {
-    console.log('load venue error')
+    console.log('load tournament error')
     return dispatch(error(error || "ERROR"));
   }
 };
 
 
-export const GetAllMatches = () => async dispatch => {
+export const GetAllTournaments = () => async dispatch => {
     try {
-      let Endpoint = `/api/match`;
+      let Endpoint = `/api/tournament`;
       let response = await DataAccess.Get(Endpoint);
       console.log(response);
       dispatch(setAllMatchesInfo(response))
       return dispatch(success(response));
     } catch (error) {
-      console.log('get all matches error')
+      console.log('get all tournaments error')
       dispatch(error(error || "ERROR"));
     }
   };
 
-  export const CreateMatch = obj => async dispatch => {
+  export const CreateTournament = obj => async dispatch => {
     try {
-      let Endpoint = `/api/match/create`;
+      let Endpoint = `/api/tournament/create`;
       let response = await DataAccess.PostSecured(Endpoint, obj);
-      dispatch(setMatchInfo(response))
       return dispatch(success(response));
     } catch (error) {
       console.log('create match error');
@@ -75,24 +74,9 @@ export const GetAllMatches = () => async dispatch => {
       let Endpoint = `/api/match/join`;
       let response = await DataAccess.PostSecured(Endpoint, Id);
       console.log(response)
-      dispatch(setMatchInfo(response))
       return dispatch(success(response));
     } catch (error) {
       console.log('join match error');
-      return error;
-    }
-  };
-
-  export const StartMatch = Id => async dispatch => {
-    try {
-      console.log(Id)
-      let Endpoint = `/api/match/${Id}/start`;
-      let response = await DataAccess.Get(Endpoint);
-      console.log({StartData: response})
-      dispatch(setMatchInfo(response))
-      return dispatch(success(response));
-    } catch (error) {
-      console.log('start match error');
       return error;
     }
   };

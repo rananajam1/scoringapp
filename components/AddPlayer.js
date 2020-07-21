@@ -40,7 +40,13 @@ function AddPlayer(props) {
               let response = await dispatch(AddNewPlayer(obj));
               if(response.type === 'TEAM_SUCCESS')
               {
-                Alert.alert('Invitation Sent');
+                if(response.data.msg)
+                {
+                  Alert.alert('ALERT', response.data.msg)
+                }
+                else{
+                    Alert.alert('Invitation Sent');
+                }
               }
               else{
                 Alert.alert('Error',   `You have already sent an invitation to this player`)

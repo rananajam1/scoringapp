@@ -19,13 +19,13 @@ function CricPocket(props) {
   let dispatch = useDispatch();
 
   const handleCreate = async () => {
-    let res = dispatch(CreateCricpocket());
+    let res = await dispatch(CreateCricpocket());
     if(res.type === 'CRICPOCKET_SUCCESS')
     {
       Alert.alert('Successfull');
     }
     else{
-      Alert.alert('failed');
+      Alert.alert('Success');
     }
   }
 

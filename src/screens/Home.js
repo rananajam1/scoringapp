@@ -12,7 +12,7 @@ import { SliderBox } from 'react-native-image-slider-box';
 import { LoadPlayer, GetAllPlayers } from '../../redux/js/actions/PlayerActions/PlayerActions';
 import { GetAllTeams, LoadTeam } from '../../redux/js/actions/TeamActions/TeamActions';
 import { GetAllVenues, LoadMyVenues } from '../../redux/js/actions/VenueActions/VenueActions';
-import { GetAllMatches } from '../../redux/js/actions/MatchActions/MatchActions';
+import { GetAllMatches, LoadMyMatches } from '../../redux/js/actions/MatchActions/MatchActions';
 import { LoadCricpocket } from '../../redux/js/actions/CricpocketActions/CricpocketActions';
 import { LoadRequests } from '../../redux/js/actions/RequestActions/RequestActions';
 
@@ -33,7 +33,8 @@ function Home(props) {
   }  
 
   const user = useSelector(state => state.token.userData.user)
-  const venues = useSelector(state => state.token.allVenues)
+  const venues = useSelector(state => state.token.allVenues);
+  let [venueImages, setVenueImages] = useState([]);
   
 
   useEffect(() => {
@@ -150,7 +151,17 @@ function Home(props) {
               }
               else
               {
-                console.log('All Matches Error')
+                console.log('All Requests Error')
+              }
+
+              response = await dispatch(LoadMyMatches());
+              if(response.type === 'MATCH_SUCCESS')
+              {
+                console.log('My Matches Loaded')
+              }
+              else
+              {
+                console.log('My Matches Error')
               }
           }
           else{
@@ -196,12 +207,20 @@ function Home(props) {
                     <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', margin: 20}}>OUR VENUES</Text>
                 </View>
                 <View style={{flex:0.3, justifyContent:'center', alignItems: 'center'}}>
-                    <SliderBox
-                      images={state.images2}
-                      sliderBoxHeight={220}
-                      dotColor="#FFEE58"
-                      inactiveDotColor="#90A4AE"
-                    />
+                  {/* <FlatList
+                    data={venues}
+                    renderItem={({ item }) => {
+                      setVenueImages(venueImages => [...venueImages, item.avatar]);
+                    }}
+                    keyExtractor={item => item.id}
+                  /> */}
+                  <SliderBox
+                  images={state.images2}
+                  sliderBoxHeight={220}
+                  dotColor="#FFEE58"
+                  inactiveDotColor="#90A4AE"
+                />
+                    
                 </View>
               </ScrollView>        
             </View>

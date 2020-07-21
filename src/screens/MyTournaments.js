@@ -60,7 +60,7 @@ function MyTournaments(props) {
                     <TouchableOpacity style={{backgroundColor: "#01438D", borderRadius: 15, fontSize: 16, 
                             marginHorizontal: 3, color: "#ffff", padding: 10, textAlign: "center", width: 100, fontWeight: "500",
                             alignItems:'center', margin:30}}
-                            onPress={() => props.navigation.navigate('VenueForm')}>
+                            onPress={() => props.navigation.navigate('TournamentForm')}>
                         <Text style={{fontSize: 18, color: 'white'}}>Create</Text>
                     </TouchableOpacity>
                 </View>

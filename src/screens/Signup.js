@@ -38,8 +38,8 @@ function Signup(props) {
       else{
         if (confirm === password) {
           let response = await dispatch(UserSignup(SignupObject))
+          response = await dispatch(loadUser());
           if (response.type === 'AUTH_SUCCESS') {
-            dispatch(loadUser());
             Alert.alert('Registration success');    
           }
           else {

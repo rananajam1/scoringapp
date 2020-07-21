@@ -11,6 +11,7 @@ import { JoinMatch } from '../redux/js/actions/MatchActions/MatchActions';
 function JoinMatchForm(props) {
 
     const [id, setId] = useState('');
+    let match = useSelector(state => state.token.myMatches)
 
     let dispatch = useDispatch();
 
@@ -21,14 +22,21 @@ function JoinMatchForm(props) {
         if (check) {
           console.log('Join Match Form');
           let response = await dispatch(JoinMatch(Obj));
-          if (response.type === 'TEAM_SUCCESS') {
-            console.log(response)
+
+          if (response.type === 'MATCH_SUCCESS') {
+            if(response.data.msg)
             {
-              Alert.alert('Match Scheduled');
+              Alert.alert('ALERT', response.data.msg)
+            }
+            else{
+              console.log({Response: response.data})
+              console.log({StateMatch: match})
+              Alert.alert('Match', `Title: ${response.data.teamA.name} VS ${response.data.teamB.name}
+              \nVenue: ${response.data.venue.name} \nBid: ${response.data.bid} \nPrize: ${response.data.prize}`, [{text: 'Toss'}]);
             }
           } else {
             {
-              () => Alert.alert('Match Failed');
+              Alert.alert('Match', 'Error', [{text: 'Start'}]);
             }
           }
         } else {

@@ -72,7 +72,6 @@ export const GetTeamPlayers = () => async dispatch => {
     let Endpoint = `/api/team/my-team/me/players`;
     let response = await DataAccess.Get(Endpoint);
     console.log(response);
-    dispatch(setTeamPlayersInfo(response));
     return dispatch(success(response));
   } catch (error) {
     console.log('get my team players error');

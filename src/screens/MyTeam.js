@@ -16,25 +16,23 @@ function MyTeam(props) {
 
     let user = useSelector(state => state.token.userData);
     let profile = useSelector(state => state.token.profile);
-    let playerState = useSelector(state => state.token.player);
+    let player = useSelector(state => state.token.player);
     let teamState = useSelector(state => state.token.team);
-    let [team, setTeam] = useState('');
-    let [player, setPlayer] = useState('');
     let [teamPlayers, setTeamPlayers] = useState('');
 
   let dummy = 
   {
     "t20": {
-      'matches' : 20,
-      'won' : 12,
-      'lost' : 5,
-      'no_result' : 3,
+      'matches' : 2,
+      'won' : 1,
+      'lost' : 0,
+      'no_result' : 1,
     } ,
     "oneday": {
-      'matches' : 15,
-      'won' : 8,
-      'lost' : 5,
-      'no_result' : 2,
+      'matches' : 3,
+      'won' : 2,
+      'lost' : 1,
+      'no_result' : 0,
       } ,
     "test": {
       'matches' : 0,
@@ -51,6 +49,13 @@ function MyTeam(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let response = await dispatch(GetTeamPlayers())
+              if(response.type === 'TEAM_SUCCESS')
+              {
+                console.log({TeamPlayer: response.data})
+                await setTeamPlayers(response.data);
+              }
+
           // let response1 = await dispatch(LoadPlayer());
           // if (response1.type === 'PLAYER_SUCCESS') {
           //   console.log('Player Loaded')
@@ -98,7 +103,6 @@ function MyTeam(props) {
                   props.navigation.navigate('landing');
                   }}
                 />
-                {console.log({TeamState: teamState})}
                 {teamState && teamState.name
                 ? 
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
@@ -109,7 +113,7 @@ function MyTeam(props) {
                 <View style={{flex: 0.6, flexDirection: 'row', justifyContent: 'flex-start', justifyContent: 'flex-start'}}>
                     <Image source={{uri:teamState.avatar}} style={{height: 150, width:150, borderRadius:200, borderWidth:2, borderColor: '#507E14'}}/>
                     
-                        <Text style={{marginLeft:30, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
+                        <Text style={{marginLeft:10, fontSize: 20, fontWeight: '400', color: '#507E14'}}>
                         {'\n'}Name: {teamState && teamState.name}{'\n'}City: {teamState && teamState.city}
                         {'\n'}Manager: {profile.name} {'\n'}Level: {teamState.level} {'\n\n'} ___________
                         </Text>
@@ -132,7 +136,7 @@ function MyTeam(props) {
                         Join
                       </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}} onPress={() => Alert.alert('All matches')}>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 20}} onPress={() => props.navigation.navigate('MyMatches')}>
                       <Text style={styles.signupButton}>
                         All
                       </Text>

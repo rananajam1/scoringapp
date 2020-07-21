@@ -9,23 +9,21 @@ import { CreateTeam } from '../redux/js/actions/TeamActions/TeamActions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import { CreateVenue } from '../redux/js/actions/VenueActions/VenueActions';
 
-function Venuefrom(props) {
+function TournamentForm(props) {
 
     const [name, setName] = useState('');
     const [city, setCity] = useState('');
     const [fee, setFee] = useState('');
-    const [address, setAddress] = useState('');
     const [avatar, setAvatar] = useState('https://static.vecteezy.com/system/resources/thumbnails/000/427/012/small/Cricket_Stadium_Vector.jpg');
 
     let dispatch = useDispatch();
 
     const handleSubmit = async () => {
-            let check = checkInputs([city, fee , name, address, avatar]);
+            let check = checkInputs([city, fee , name, avatar]);
             let VenueObject = {
               name: name,
               city: city, 
               avatar: avatar,
-              address: address,
               fee: fee,
             };
             if(check) {
@@ -64,7 +62,7 @@ function Venuefrom(props) {
             } else if (response.customButton) {
               setAvatar('https://static.vecteezy.com/system/resources/thumbnails/000/427/012/small/Cricket_Stadium_Vector.jpg')
             } else {
-              setAvatar(`require("${response.uri}")`);
+              setAvatar(response.uri);
             }
           });
         }
@@ -111,12 +109,13 @@ function Venuefrom(props) {
     return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <KeyboardAwareScrollView style={{flex: 1}}>
-                <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', textAlign: 'center', marginTop: 20}}>ADD VENUE</Text>
+                <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', textAlign: 'center', marginTop: 20}}>ADD TOURNMENT</Text>
                 <TouchableOpacity onPress = {() =>{chooseImage()}} style={{margin: 20,alignItems:'center', justifyContent:'center'}}>
                     {renderFileUri()}
                     <Text style={{backgroundColor: '#01438D', color:'white' ,padding: 5}}>Edit</Text>
                 </TouchableOpacity>    
-                <Text style={{fontSize: 20, margin: 20, marginLeft: 0}}>Complete Your Venue Fileds</Text>
+                <Text style={{fontSize: 20, margin: 20, textAlign: 'center'}}>Complete Your Tournament Fileds</Text>
+                <View style={{justifyContent: "center", alignItems: 'center', marginHorizontal: 30}}>
                 <TextInput 
                     style={styles.inputBox} 
                     placeholder="Name" 
@@ -134,27 +133,23 @@ function Venuefrom(props) {
                     onChangeText={(text) => setCity(text)}/>
                  <TextInput 
                     style={styles.inputBox} 
-                    placeholder="Fee" 
+                    placeholder="Entry Fee" 
                     placeholderTextColor="white"
                     autoCapitalize = 'none'
                     value={fee}
                     onChangeText={(text) => setFee(text)}/>
-                 <TextInput 
-                    style={styles.inputBox} 
-                    placeholder="Address" 
-                    placeholderTextColor="white"
-                    autoCapitalize = 'none'
-                    value={address}
-                    onChangeText={(text) => setAddress(text)}/>
                  
-                <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress = {() =>{handleSubmit()}}>
+                <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', margin: 40}} onPress = {() =>{handleSubmit()}}>
                     <Text style={styles.signupButton}>  
-                        Create
+                       + Create
                     </Text>
                 </TouchableOpacity>
+
+                </View>
+                
             </KeyboardAwareScrollView>
         </View>
     );
 }
 
-export default Venuefrom;
+export default TournamentForm;

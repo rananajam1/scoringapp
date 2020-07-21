@@ -8,43 +8,52 @@ import ImagePicker from 'react-native-image-picker';
 import { AddNewPlayer } from '../redux/js/actions/TeamActions/TeamActions';
 import { FindPlayer } from '../redux/js/actions/PlayerActions/PlayerActions';
 import Header from '../src/screens/Header'
+import { StartMatch } from '../redux/js/actions/MatchActions/MatchActions';
 
 function Toss(props) {
-let team1 = 'Islamabad United', team2="Karachi Kings";
+const {match} = props.route.params;
+console.log(match);
+
+let teamA = match.teamA ; let teamB= match.teamB
 
 let [todecide, setTodecide] = useState('')
 let [winner, setWinner] = useState('')
 let [decision, setDecision] = useState('')
-let final;
+
+let dispatch = useDispatch();
 
 useEffect(() => {
-    toSelect(team1, team2);
+    toSelect(teamA.name, teamB.name);
     final = winner
 })
 
 const toss = (team, choice) => {
-    let result = '';
-    let coin = Math.floor((Math.random() * 2) + 1);
-    if(team === team1)
+    let result = ''; let i = 0, coin ;
+    while(i != 5000)
+    {
+        coin = Math.floor((Math.random() * 2) + 1);
+        i++;
+    }
+    if(team === teamA.name)
     {
         if(coin === choice)
         {
-           result = team1;
+           result = teamA;
         }
         else
         {
-            result = team2;
+            result = teamB;
         }
     }
     else 
     {
         if(coin === choice)
         {
-           result = team2;
+           result = teamB;
         }
         else
         {
-            result = team1;
+            result = teamA;
         }
     }
     console.log({toss_winner: result})
@@ -52,16 +61,21 @@ const toss = (team, choice) => {
     return result;
 }
 
-const toSelect = (team1, team2) => {
-    let result = '';
-    let coin = Math.floor((Math.random() * 2) + 1);
+const toSelect = (teamA, teamB) => {
+    let result = ''; let i = 0, coin ;
+    while(i != 5000)
+    {
+        coin = Math.floor((Math.random() * 2) + 1);
+        i++;
+    }
+
     if(coin === 1)
     {
-        result = team1;
+        result = teamA;
     }
     else
     {
-        result = team2;
+        result = teamB;
     }
     setTodecide(result);
     return result;
@@ -73,13 +87,24 @@ const toSelect = (team1, team2) => {
             Alert.alert('Match Start error','Desion has not been taken yet')
         }
         else {
-            props.navigation.navigate('Scoring')
+            let response = await dispatch(StartMatch(match._id));
+            if(response.type === 'MATCH_SUCCESS')
+            {
+                if(response.data.msg)
+                {
+                    Alert.alert(response.data.msg);
+                }
+                props.navigation.navigate('scoring', {match: match})
+            }
+            else{
+                Alert.alert('Something Wrong')
+            }
         }
 }  
 
 const decide = (value) => {
     setDecision(value);
-    Alert.alert('Toss', `${winner} have won the toss & decided to ${value}`)
+    Alert.alert('Toss', `${winner.name} have won the toss & decided to ${value}`)
 }
 
     return (
@@ -87,31 +112,35 @@ const decide = (value) => {
             <ScrollView style={{flex: 1}}>
                 <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', textAlign: 'center', marginTop: 40}}>Toss</Text>
                 
-                <Text style={{fontSize: 20, marginTop: 50, marginBottom: 50,textAlign:'center'}}>Islamabad United VS Karchi Kings</Text>
-                <Text style={{fontSize: 20, marginTop: 50, marginBottom: 50,textAlign:'center'}}>{todecide} to Chose the Coin</Text>
+                <Text style={{fontSize: 20, fontWeight: '600', marginTop: 50, marginBottom: 20,color: '#01438D',textAlign:'center'}}>{`${teamA.name}   VS   ${teamB.name}`}</Text>
+                <Text style={{fontSize: 20, fontWeight: '600', marginTop: 20, marginBottom: 20,textAlign:'center'}}>{todecide} to Chose the Coin</Text>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 10}} onPress = {() =>{toss(todecide, 1)}}>
-                    <Text style={styles.signupButton}>  
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 30}} onPress = {() =>{toss(todecide.teamA, 1)}}>
+                    {/* <Text style={styles.signupButton}>  
                         Heads
-                    </Text>
+                    </Text> */}
+                    {console.log({ToDecide : todecide})}
+                    <Image source={require('../images/heads.png')} style={{height: 120, width: 120}}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress = {() =>{toss(todecide, 2)}}>
-                    <Text style={styles.signupButton}>  
+                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress = {() =>{toss(todecide.teamB, 2)}}>
+                    {/* <Text style={styles.signupButton}>  
                         Tails
-                    </Text>
+                    </Text> */}
+                    <Image source={require('../images/tails.png')} style={{height: 120, width: 120}}/>
                     </TouchableOpacity>
                 </View>
-                {(winner === team1 ||  winner === team2) && 
+                {(winner.name === teamA.name ||  winner.name === teamB.name) && 
                 <View>
-                    <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', textAlign: 'center', marginTop: 40}}>Result</Text>  
-                <View>
-                    <Text style={{fontSize: 20, marginTop: 10, marginBottom: 10,textAlign:'center'}}>Congratulations !!!</Text>
-                    <Text style={{fontSize: 20, marginTop: 10, marginBottom: 10,textAlign:'center'}}>{winner} have won the Toss</Text>
+                    <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', textAlign: 'center', marginTop: 20}}>Result</Text>  
+                <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
+                    <Image source={{uri: winner.avatar}} style={{height: 200, width: 200}}/>
+                    {/* <Text style={{fontSize: 20, marginTop: 10, marginBottom: 10,textAlign:'center'}}>Congratulations !!!</Text> */}
+                    <Text style={{fontSize: 20, marginTop: 10, marginBottom: 10,textAlign:'center'}}>{winner.name} won the Toss</Text>
                 </View> 
                    
                 <View>
                 <Text style={{fontWeight: '800', fontSize: 25, color: '#01438D', textAlign: 'center', marginTop: 40}}>Decision</Text>
-                <Text style={{fontSize: 20, marginTop: 50, marginBottom: 10,textAlign:'center'}}>{winner}'s Decision</Text>
+                <Text style={{fontSize: 20, marginTop: 50, marginBottom: 10,textAlign:'center'}}>{winner.name}'s Decision</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                         {console.log({Winner: winner})}
                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', padding: 10}} 

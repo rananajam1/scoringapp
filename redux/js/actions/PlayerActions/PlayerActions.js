@@ -24,6 +24,11 @@ export const setPlayerInfo = Info => ({
   Info
 });
 
+export const setRequestInfo = Info => ({
+  type: "SET_REQUEST_INFO",
+  Info
+});
+
 export const setAllPlayersInfo = Info => ({
   type: "SET_ALL_PLAYERS_INFO",
   Info
@@ -69,18 +74,18 @@ export const CreatePlayer = (Obj) => async dispatch => {
     }
   };
 
-  export const AcceptRequest = (request_id) => async dispatch => {
+  export const AcceptRequest = (obj) => async dispatch => {
     try {
-        let Endpoint = `/api/player`;
+        let Endpoint = `/api/player/requests/${obj}/accept`;
         let response = await DataAccess.Get(Endpoint);
-        dispatch(setAllPlayersInfo(response));
+        console.log(response)
         return dispatch(success(response));
-      
     } catch (error) {
       console.log('get all player error')
       dispatch(error(error || "ERROR"));
     }
   };
+
 
   export const FindPlayer = (Obj) => async dispatch => {
     try {

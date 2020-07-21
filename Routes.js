@@ -30,9 +30,11 @@ import ScoreCard from './src/screens/ScoreCard';
 import Requests from './src/screens/Requests';
 import { useDispatch, useSelector } from 'react-redux';
 import MyTournaments from './src/screens/MyTournaments';
+import MyMatches from './src/screens/MyMatches';
 import MatchForm from './components/MatchForm';
 import JoinMatchForm from './components/JoinMatchForm';
 import Toss from './components/Toss';
+import TournamentForm from './components/TournamentForm';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -85,6 +87,7 @@ function AppStack() {
       drawerStyle={{ backgroundColor: 'white', width: 240}} drawerContent={(props) => <CustomDrawerContent {...props} />}
       drawerContentOptions={{activeBackgroundColor:'#507E14', activeTintColor:'white'}}
       initialRouteName="Home">
+        {console.log({StartState: state})}
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="My Profile" component={MyProfile} />
       <Drawer.Screen name="My Player" component={MyPlayer} />
@@ -94,7 +97,7 @@ function AppStack() {
       <Drawer.Screen name="My Venues" component={MyVenues} />
       : state && state.role === 'Organizer' ?
       <Drawer.Screen name="My Tournaments" component={MyTournaments} />
-      : 
+      :
       <Drawer.Screen name="Testing" component={Home}/>
       }
       <Drawer.Screen name="My CricPocket" component={CricPocket} />
@@ -103,8 +106,8 @@ function AppStack() {
       <Drawer.Screen name="Tournaments" component={TournamentSection} />
       <Drawer.Screen name="Matches" component={MatchSection} />
       <Drawer.Screen name="Venues" component={VenueSection} />
-      <Drawer.Screen name="Umpires" component={CricPocket} />
-      <Drawer.Screen name="Toss" component={Toss} />
+      {/* <Drawer.Screen name="Umpires" component={CricPocket} /> */}
+      {/* <Drawer.Screen name="Toss" component={Toss} /> */}
       <Drawer.Screen name="Requests" component={Requests} />
       <Drawer.Screen name="Scoring" component={Tabs} />
     </Drawer.Navigator>
@@ -130,11 +133,14 @@ export default function Routes() {
         <Stack.Screen name="dashboard" component={AppStack} />
         <Stack.Screen options={{headerShown: true}} name="form" component={ProfileForm} />
         <Stack.Screen options={{headerShown: true}} name="VenueForm" component={VenueForm} />
+        <Stack.Screen options={{headerShown: true}} name="TournamentForm" component={TournamentForm} />
         <Stack.Screen options={{headerShown: true}} name="TeamSquad" component={TeamSquad} />
         <Stack.Screen options={{headerShown: true}} name="CricpocketCard" component={CricpocketCard} />
         <Stack.Screen options={{headerShown: true}} name="AddPlayer" component={AddPlayer} />
         <Stack.Screen options={{headerShown: true}} name="MatchForm" component={MatchForm} />
         <Stack.Screen options={{headerShown: true}} name="JoinMatchForm" component={JoinMatchForm} />
+        <Stack.Screen options={{headerShown: true}} name="MyMatches" component={MyMatches} />
+        <Stack.Screen options={{headerShown: true, title: 'Toss'}} name="toss" component={Toss} />
       </Stack.Navigator>
     </NavigationContainer>
   );

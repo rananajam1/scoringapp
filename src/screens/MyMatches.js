@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import Card from '../../components/Card';
 
-function VenueSection(props) {
-  
-  const venues = useSelector(state => state.token.allVenues);
+function MyMatches(props) {
 
+  const matches = useSelector(state => state.token.myMatches)
+  
   let dispatch = useDispatch();
     return (
         <Container>
@@ -20,19 +20,19 @@ function VenueSection(props) {
           OpenMenu={() => {
             props.navigation.toggleDrawer();
           }}
-          Screen={"Venue Section"}
           isLogout={true}
           Logout={() => { dispatch(logoutUser())
-          props.navigation.navigate('landing');
+            props.navigation.navigate('landiing');
           }}
         />
         <View style={{justifyContent:'center', alignItems: 'center'}}>
-          <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>VENUES</Text>
+          <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>MATCHES</Text>
         </View>
         <View style={{justifyContent:'center', alignItems: 'center'}}>
+          {console.log({MatchesState: matches})}
             <FlatList
-              data={venues}
-              renderItem={({ item }) => <Card children={item} text={'venue'}/>}
+              data={matches}
+              renderItem={({ item }) => <Card children={item} text={'match'} button={'Toss'} button2={'Continue'} flow={props.navigation}/>}
               keyExtractor={item => item._id}
             />
           </View>
@@ -40,4 +40,4 @@ function VenueSection(props) {
     );
 }
 
-export default VenueSection;
+export default MyMatches;

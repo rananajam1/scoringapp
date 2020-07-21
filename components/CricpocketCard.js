@@ -23,9 +23,14 @@ function CricpocketCard(props) {
         let res = await dispatch(LoadReceiver(obj));
         if(res.type === 'CRICPOCKET_SUCCESS')
         {
-            console.log(res.data.data)
-            setFindReceiver(res.data.data)
-            Alert.alert('Receiver' , 'Title : '+res.data.data.title +'\n' + 'Account : '+res.data.data.account);
+            if(response.data.msg)
+            {
+              Alert.alert('ALERT', response.data.msg)
+            }else{
+            console.log(res.data)
+            setFindReceiver(res.data)
+            Alert.alert('Receiver' , 'Title : '+res.data.title +'\n' + 'Account : '+res.data.account);
+            }
         }
     }
 
@@ -40,9 +45,15 @@ function CricpocketCard(props) {
                 response = await dispatch(DepositAmount(CricPocketObject))
                 if(response.type == 'CRICPOCKET_SUCCESS')
                 {
+                    if(response.data.msg)
+                    {
+                    Alert.alert('ALERT', response.data.msg)
+                    }
+                    else{
                     Alert.alert('Deposit Succesful');
                     props.navigation.navigate('AppLanding');
                     console.log(response)
+                    }
                 }
                 else
                 {
@@ -57,8 +68,14 @@ function CricpocketCard(props) {
                 response = await dispatch(WithdrawAmount(CricPocketObject))
                 if(response.type == 'CRICPOCKET_SUCCESS')
                 {
+                    if(response.data.msg)
+                    {
+                    Alert.alert('ALERT', response.data.msg)
+                    }
+                    else{
                     Alert.alert('Withdraw Succesful');
                     props.navigation.navigate('AppLanding');
+                    }
                 }
                 else
                 {
@@ -73,9 +90,15 @@ function CricpocketCard(props) {
                   };
                 response = await dispatch(TransferAmount(CricPocketObject))
                 if(response.type == 'CRICPOCKET_SUCCESS')
-                {
+                {   
+                    if(response.data.msg)
+                    {
+                    Alert.alert('ALERT', response.data.msg)
+                    }
+                    else{
                     Alert.alert('Transfer Succesful');
                     props.navigation.navigate('AppLanding');
+                    }
                 }
                 else
                 {

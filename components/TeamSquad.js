@@ -9,24 +9,9 @@ function TeamSquad(props) {
 
     useEffect(() => {
     })
-    console.log({Props : props.route.params})
+
     const {teamPlayers} = props.route.params;
     console.log({TamSquadPlayer : teamPlayers})
-
-    const list = [
-        {
-            id: '1',
-          name: 'Amy Farha',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-          subtitle: 'Vice President'
-        },
-        {
-            id: '2',
-          name: 'Chris Jackson',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-          subtitle: 'Vice Chairman'
-        }    
-    ]
 
     return(
             <Container style={{}}>
@@ -51,7 +36,7 @@ function TeamSquad(props) {
                 </List>
               </Content>
             }
-            keyExtractor={item => item.id}
+            keyExtractor={item => item._id}
             />  
          </Container>
     )

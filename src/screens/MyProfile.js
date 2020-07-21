@@ -8,7 +8,7 @@ import ProfileForm from '../../components/ProfileForm';
 
 function MyProfile(props) {
 
-  let user = useSelector(state=> state.token.userData)
+  let user = useSelector(state=> state.token.userData.user)
   let profile = useSelector(state => state.token.profile)
   let dispatch = useDispatch();
 
@@ -26,6 +26,7 @@ function MyProfile(props) {
                   }}
                 />
                 {console.log({Profile: profile})}
+                {console.log({User: user})}
                  {user && user.profile_info === false
                   ? <View style={{flex: 1}}>
                   <ProfileForm user= {user}/>
@@ -39,11 +40,14 @@ function MyProfile(props) {
                 </View>
                 <View style={{flex: 0.7, justifyContent: 'flex-start', alignItems: 'center', marginTop:20}}>
                 <Text style={{margin:30, fontSize: 20, fontWeight: '600', color: '#507E14', textAlign:'justify'}}>
-                    {'\n'}Name: {profile && profile.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
+                    Name: {profile && profile.name} {"\n"}Age: {profile && profile.age} {'\n'}City: {profile && profile.city}
                     {'\n'} _______________________________________
                 </Text>
-                <Text style={{margin:10, fontSize: 25, fontWeight: '900', color: '#01438D', textAlign:'justify'}}>
+                <Text style={{margin:30, fontSize: 25, fontWeight: '900', color: '#01438D', textAlign:'justify'}}>
                       {user && user.role}
+                </Text>
+                <Text style={{margin:10, fontSize: 20, fontWeight: '300', color: '#507E14', textAlign:'justify'}}>
+                      User ID:  {user && user.account_id}
                 </Text>
                 <Text style={{margin:10, fontSize: 20, fontWeight: '300', color: '#507E14', textAlign:'justify'}}>
                       Email: {user && user.email}
