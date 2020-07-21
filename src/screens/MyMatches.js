@@ -15,16 +15,6 @@ function MyMatches(props) {
   let dispatch = useDispatch();
     return (
         <Container>
-        <AppHeader
-          isMenu={true}
-          OpenMenu={() => {
-            props.navigation.toggleDrawer();
-          }}
-          isLogout={true}
-          Logout={() => { dispatch(logoutUser())
-            props.navigation.navigate('landiing');
-          }}
-        />
         <View style={{justifyContent:'center', alignItems: 'center'}}>
           <Text style={{fontWeight: '800', fontSize: 25, color: '#507E14', marginTop: 20}}>MATCHES</Text>
         </View>

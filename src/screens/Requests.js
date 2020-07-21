@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, Image} from 'react-native';
 import {Container} from 'native-base'
 import AppHeader from './Header';
 import {logoutUser} from '../../redux/js/actions/AuthActions/AuthActions';
@@ -16,14 +16,15 @@ function Requests(props) {
 
   const requests = useSelector(state => state.token.requests)
 
-  const handleAccept = async(value) => {
-    let obj = {
-      _id : value
-    }
-    
-    let response = await dispatch(AcceptRequest(obj));
+  const handleAccept = async(_id) => {
+  
+    let response = await dispatch(AcceptRequest(_id));
         if(response.type === 'PLAYER_SUCCESS')
         {
+          if(response.data.msg)
+          {
+            Alert.alert(response.data.msg);
+          }
           Alert.alert('Request Accepted')
         }
         else{
@@ -53,9 +54,11 @@ function Requests(props) {
             <FlatList
               data={requests}
               renderItem={({ item }) => 
-              <View style={{justifyContent: 'center', alignItems: 'center', width: 400, height: 200, borderWidth: 2, padding: 20}}>
+              <View style={{justifyContent: 'center', alignItems: 'center', width: 350, height: 400, borderWidth: 2, padding: 20}}>
+                <Image style={{width: 150, height: 150}}
+                source = {{uri : item.sender.avatar ? item.sender.avatar : "https://images.vexels.com/media/users/3/140800/isolated/preview/86b482aaf1fec78a3c9c86b242c6ada8-man-profile-avatar-by-vexels.png"}}/>
                 <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>{item.title}</Text>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>{item.description}</Text>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>{item.requested_team.name && item.requested_team.name}</Text>
                 <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>{item.sender.email}</Text>
                 <View style={{flexDirection: 'row', padding: 20, justifyContent: 'center', alignItems: 'center'}}>
                   <TouchableOpacity style={{justifyContent:'center', alignItems: 'center', marginHorizontal: 20}} onPress = {() =>{handleAccept(item._id)}}>

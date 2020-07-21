@@ -12,143 +12,133 @@ import ModalDropdown from 'react-native-modal-dropdown';
 
 function Scoring(props) {
 
-    let wides = [{
-        value: '0wd',
-      }, {
-        value: '1wd',
-      }, {
-        value: '2wd',
-      }, {
-        value: '3wd',
-      }, {
-        value: '4wd',
-      }];
+    let {match} = props.route.params;
 
-    let match = {
-        'team1' : 'Islamabad United',
-        'team2' : 'Karachi Kings',
-        'team1_s' : 'IU',
-        'team2_s' : 'KK',
-        'toss' : '',
-        'batting_1': '',
-        'venue' : 'Comsats Cricket ground Islamabad',
-        'team1_players' : [
-            {
-                "name" : "Nausherwan Tahir",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Sheheryar Arshad',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Zahoor Alam",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Raja Maooz',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Ali Raza",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Salman Anwar',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Burhan Khan",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Noman Ajaz',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Haseeb Ansari",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Naeem Khan',
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'ShahJehan Khan',
-                "score" : 0
-            }
-            ,
-        ],
-        'team2_players' : [
-            {
-                "name" : "Hassan Ali",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Kamran Shahid',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Ali Waqar",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Khurum Manzoor',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Shaoib Ahmed",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Salman Anwar',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Burhan Khan",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Noman Ajaz',
-                "score" : 0
-            }
-            ,
-            {
-                "name" : "Haseeb Ansari",
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'Naeem Khan',
-                "score" : 0
-            }
-            ,
-            {
-                "name": 'ShahJehan Khan',
-                "score" : 0
-            }
-            ,
-        ],
-    }
+    // let match = {
+    //     'team1' : 'Islamabad United',
+    //     'team2' : 'Karachi Kings',
+    //     'teamA' : 'IU',
+    //     'team2_s' : 'KK',
+    //     'toss' : '',
+    //     'batting_1': '',
+    //     'venue' : 'Comsats Cricket ground Islamabad',
+    //     'team1_players' : [
+    //         {
+    //             "name" : "Nausherwan Tahir",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Sheheryar Arshad',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Zahoor Alam",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Raja Maooz',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Ali Raza",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Salman Anwar',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Burhan Khan",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Noman Ajaz',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Haseeb Ansari",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Naeem Khan',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'ShahJehan Khan',
+    //             "score" : 0
+    //         }
+    //         ,
+    //     ],
+    //     'team2_players' : [
+    //         {
+    //             "name" : "Hassan Ali",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Kamran Shahid',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Ali Waqar",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Khurum Manzoor',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Shaoib Ahmed",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Salman Anwar',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Burhan Khan",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Noman Ajaz',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name" : "Haseeb Ansari",
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'Naeem Khan',
+    //             "score" : 0
+    //         }
+    //         ,
+    //         {
+    //             "name": 'ShahJehan Khan',
+    //             "score" : 0
+    //         }
+    //         ,
+    //     ],
+    // }
 
-    let team1 = match.team1_s , team2= match.team2_s, toss_win, batting1, batting2;
+    let team1 = match.teamA , team2= match.teamB, toss_win, batting1, batting2;
     let  [score, setScore] = useState(0),
         [wickets, setWickets] = useState(0),
         [balls, setBalls] = useState(0),

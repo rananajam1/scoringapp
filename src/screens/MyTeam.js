@@ -103,7 +103,7 @@ function MyTeam(props) {
                   props.navigation.navigate('landing');
                   }}
                 />
-                {teamState && teamState.name
+                {teamState && teamState.name 
                 ? 
                 <View style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}}>
                   <ScrollView>

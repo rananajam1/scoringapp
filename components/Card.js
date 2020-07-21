@@ -2,7 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text, Alert } from 'react-native';
 import { Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {InvitePlayer} from '../redux/js/actions/TeamActions/TeamActions'
 
 function Card(props) {
     let user = useSelector(state => state.token.userData.user)
@@ -15,6 +16,21 @@ function Card(props) {
         props.flow.navigate('toss', {match: props.children});
     }
 
+    let dispatch = useDispatch();
+    const handleInvite = async(_id) => {
+        let response = await dispatch(InvitePlayer(_id));
+        if(response.type === 'TEAM_SUCCESS')
+        {
+            if(response.data.msg)
+            {
+                Alert.alert(response.data.msg);
+            }
+            else{
+                Alert.alert(`Invitation sent to ${props.children.name}`)
+            }
+        }
+    }
+
     return (
         <View style={styles.containerStyle}>
             {props.text && props.text === 'match'
@@ -22,18 +38,24 @@ function Card(props) {
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Image source={{uri: props.children.teamA.avatar && props.children.teamA.avatar}} style={{height: 100, width: 100}}/>
                     <Text style={{padding: 5, margin: 10, fontSize: 20}}>VS</Text>
-                    <Image source={{uri: props.children.teamB && props.children.teamB.avatar}} style={{height: 100, width: 100}}/>
+                    <Image source={{uri: props.children.teamB ? props.children.teamB.avatar : "https://png.pngtree.com/png-clipart/20200401/original/pngtree-hand-drawn-stay-tuned-comingsoon-png-image_5339500.jpg"}} 
+                    style={{height: 100, width: 100}}/>
                 </View>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center', marginTop: 30}}>Title : {`${props.children.teamA.name} VS ${props.children.teamB && props.children.teamB.name}`}</Text>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'500', alignItems: 'center', marginTop: 20}}>Format : {props.children.format}</Text>
-                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'500', alignItems: 'center', marginTop: 20}}>Venue : {props.children.venue.name}</Text>
-                <View>
-                <TouchableOpacity style={{padding: 20}} onPress = {() => handleStart()}>
-                    {(props.button && props.button) && (props.children.start_status) ?
+                <Text style={{color: "#507E14", fontSize: 14 , fontWeight:'500', alignItems: 'center', marginTop: 20}}>ID:  : {props.children._id}</Text>
+                <Text style={{color: "#01438D", fontSize: 20, fontWeight:'bold', alignItems: 'center', marginTop: 20}}>Title : {`${props.children.teamA.name} VS ${props.children.teamB ? props.children.teamB.name : '?'}`}</Text>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'500', alignItems: 'center', marginTop: 10}}>Format : {props.children.format}</Text>
+                <Text style={{color: "#507E14", fontSize: 20, fontWeight:'500', alignItems: 'center', marginTop: 10}}>Venue : {props.children.venue.name}</Text>
+                <View style={{marginBottom: 20}}>
+                    {console.log({Button : props.button})}
+                {(props.button && props.button) && (props.children.start_status) ?
+                <TouchableOpacity style={{padding: 10}} onPress = {() => handleStart()}>
                     <Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 60}}>{props.button2 && props.button2}</Text>   
-                    :<Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 60}}>{props.button && props.button}</Text>   
-                    } 
                 </TouchableOpacity>
+                : props.button && props.button &&
+                <TouchableOpacity style={{padding: 20}} onPress = {() => handleStart()}>
+                    <Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 60}}>{props.button && props.button}</Text>   
+                </TouchableOpacity>
+                } 
                 </View>
             </View>
             : props.text && props.text === 'team'
@@ -57,7 +79,7 @@ function Card(props) {
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>{props.children.name}</Text>
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Rank : {props.children.ranking}</Text>
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>{props.children.player_type}</Text>
-            {props.children.player_type === 'Bowler'
+            {props.children.player_type === 'Batsman'
             ?<View>
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Batting : {props.children.batting_style}</Text>
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Style : {props.children.batting_technique}</Text>
@@ -71,24 +93,23 @@ function Card(props) {
             </View>
             }
           </View>}
-            {}
             {props.button && props.button === 'Invite' && user.role === 'Team Manager' ?
                 <View>
-                <TouchableOpacity style={{padding: 20}} onPress = {() => Alert.alert("Request sent to " + props.children.name)}>
-                    {(props.button && props.button) &&
-                    <Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 60}}>{props.button && props.button}</Text> 
-                    } 
-                </TouchableOpacity>
+                    { (props.button && props.button) &&
+                    <TouchableOpacity style={{padding: 20}} onPress = {() => handleInvite(props.children._id)}>
+                    
+                        <Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 60}}>{props.button && props.button}</Text> 
+                    
+                    </TouchableOpacity>
+                    }
                 </View>
             : props.button && props.button === 'Join' && (user.role === 'Team Manager' || user.role === 'Player')
             ?<View>
+                {props.button && props.button &&
                 <TouchableOpacity style={{padding: 20}} onPress = {() => Alert.alert("Request sent to " + props.children.name)}>
-                    {props.button && props.button ?
                     <Text style={{color: 'white', fontSize: 16, backgroundColor:'#01438D', padding: 10, width: 60}}>{props.button && props.button}</Text> 
-                    :
-                    <Text></Text>   
-                    } 
-                </TouchableOpacity>
+                </TouchableOpacity>    
+                } 
             </View>
             :<View style={{marginBottom: 10}}></View>
             }

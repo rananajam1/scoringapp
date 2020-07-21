@@ -83,11 +83,11 @@ export const GetAllMatches = () => async dispatch => {
     }
   };
 
-  export const StartMatch = Id => async dispatch => {
+  export const StartMatch = (Obj) => async dispatch => {
     try {
       console.log(Id)
-      let Endpoint = `/api/match/${Id}/start`;
-      let response = await DataAccess.Get(Endpoint);
+      let Endpoint = `/api/match/${Obj.match_id}/start`;
+      let response = await DataAccess.Post(Endpoint, Obj.winner);
       console.log({StartData: response})
       dispatch(setMatchInfo(response))
       return dispatch(success(response));

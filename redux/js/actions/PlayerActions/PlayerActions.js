@@ -74,9 +74,9 @@ export const CreatePlayer = (Obj) => async dispatch => {
     }
   };
 
-  export const AcceptRequest = (obj) => async dispatch => {
+  export const AcceptRequest = (_id) => async dispatch => {
     try {
-        let Endpoint = `/api/player/requests/${obj}/accept`;
+        let Endpoint = `/api/player/requests/${_id}/accept`;
         let response = await DataAccess.Get(Endpoint);
         console.log(response)
         return dispatch(success(response));

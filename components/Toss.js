@@ -29,7 +29,7 @@ useEffect(() => {
 
 const toss = (team, choice) => {
     let result = ''; let i = 0, coin ;
-    while(i != 5000)
+    while(i != 500000)
     {
         coin = Math.floor((Math.random() * 2) + 1);
         i++;
@@ -63,7 +63,7 @@ const toss = (team, choice) => {
 
 const toSelect = (teamA, teamB) => {
     let result = ''; let i = 0, coin ;
-    while(i != 5000)
+    while(i != 500000)
     {
         coin = Math.floor((Math.random() * 2) + 1);
         i++;
@@ -87,14 +87,18 @@ const toSelect = (teamA, teamB) => {
             Alert.alert('Match Start error','Desion has not been taken yet')
         }
         else {
-            let response = await dispatch(StartMatch(match._id));
+            let obj = {
+                match_id: match._id,
+                toss: winner._id
+            }
+            let response = await dispatch(StartMatch(obj));
             if(response.type === 'MATCH_SUCCESS')
             {
                 if(response.data.msg)
                 {
                     Alert.alert(response.data.msg);
                 }
-                props.navigation.navigate('scoring', {match: match})
+                props.navigation.navigate('Scoring', {match: match})
             }
             else{
                 Alert.alert('Something Wrong')

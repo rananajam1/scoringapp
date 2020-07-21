@@ -9,7 +9,6 @@ function VenueCard(props) {
     return (
         <View style={styles.containerStyle}>
             <Image source={{uri: 'https://static.vecteezy.com/system/resources/thumbnails/000/427/012/small/Cricket_Stadium_Vector.jpg'}} style={{height: 200, width:200, borderRadius: 350, marginBottom:10}}/>
-            {console.log({Venue: props.children})}
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Name : {props.children.name}</Text>
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>City : {props.children.fee}</Text>
             <Text style={{color: "#507E14", fontSize: 20, fontWeight:'bold', alignItems: 'center'}}>Fee : {props.children.city}</Text>
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
         // marginRight:5,
         margin: 20,
         padding: 10,
-        // height: 500
+        height: 300
     }
 })
 export default VenueCard;

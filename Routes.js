@@ -80,7 +80,7 @@ function CustomDrawerContent(props) {
 
 function AppStack() {
 
-  let state = useSelector(state => state.token.userData.user)
+  let state = useSelector(state => state.token.userData && state.token.userData.user )
 
   return(
     <Drawer.Navigator backBehavior= 'history' drawerType='front' hideStatusBar = 'true' statusBarAnimation='fade'
@@ -91,14 +91,12 @@ function AppStack() {
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="My Profile" component={MyProfile} />
       <Drawer.Screen name="My Player" component={MyPlayer} />
-      {state && state.role === 'Team Manager' ?
+      {(state && state.role === 'Team Manager') || (state && state.role === 'Player') ?
       <Drawer.Screen name="My Team" component={MyTeam} />
       : state && state.role === 'Ground Manager' ?
       <Drawer.Screen name="My Venues" component={MyVenues} />
-      : state && state.role === 'Organizer' ?
+      : state && state.role === 'Organizer' &&
       <Drawer.Screen name="My Tournaments" component={MyTournaments} />
-      :
-      <Drawer.Screen name="Testing" component={Home}/>
       }
       <Drawer.Screen name="My CricPocket" component={CricPocket} />
       <Drawer.Screen name="Players" component={PlayerSection} />
@@ -139,7 +137,7 @@ export default function Routes() {
         <Stack.Screen options={{headerShown: true}} name="AddPlayer" component={AddPlayer} />
         <Stack.Screen options={{headerShown: true}} name="MatchForm" component={MatchForm} />
         <Stack.Screen options={{headerShown: true}} name="JoinMatchForm" component={JoinMatchForm} />
-        <Stack.Screen options={{headerShown: true}} name="MyMatches" component={MyMatches} />
+        <Stack.Screen options={{headerShown: true, title: 'Team Matches'}} name="MyMatches" component={MyMatches} />
         <Stack.Screen options={{headerShown: true, title: 'Toss'}} name="toss" component={Toss} />
       </Stack.Navigator>
     </NavigationContainer>

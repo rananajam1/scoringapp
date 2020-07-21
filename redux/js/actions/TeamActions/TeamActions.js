@@ -79,6 +79,18 @@ export const GetTeamPlayers = () => async dispatch => {
   }
 };
 
+export const InvitePlayer = (_id) => async dispatch => {
+  try {
+    let Endpoint = `/api/team/players/${_id}/invite`;
+    let response = await DataAccess.Get(Endpoint);
+    console.log(response);
+    return dispatch(success(response));
+  } catch (error) {
+    console.log('invite players error');
+    dispatch(error(error || 'ERROR'));
+  }
+};
+
 export const AddNewPlayer = Obj => async dispatch => {
   try {
     let Endpoint = `/api/team/invite_player`;

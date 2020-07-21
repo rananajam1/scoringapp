@@ -63,7 +63,7 @@ export const loadUser = () => async dispatch => {
   try {
     let Endpoint = `/api/login`;
     let response = await DataAccess.Get(Endpoint);
-    console.log(response);
+    console.log({loadUser: response});
     dispatch(setUserInfo(response));
     return dispatch(success(response));
   } catch (err) {

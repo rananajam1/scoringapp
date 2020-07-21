@@ -32,7 +32,13 @@ function JoinMatchForm(props) {
               console.log({Response: response.data})
               console.log({StateMatch: match})
               Alert.alert('Match', `Title: ${response.data.teamA.name} VS ${response.data.teamB.name}
-              \nVenue: ${response.data.venue.name} \nBid: ${response.data.bid} \nPrize: ${response.data.prize}`, [{text: 'Toss'}]);
+              \nVenue: ${response.data.venue.name} \nBid: ${response.data.bid} \nPrize: ${response.data.prize}`, 
+              [
+                {
+                  text: 'Toss', 
+                  onPress : () => props.navigation.navigate('toss', {match: response.data})
+                }
+              ]);
             }
           } else {
             {
